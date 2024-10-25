@@ -59,10 +59,10 @@ export class UserComponent {
       headerTitle: 'Confirmation',
       bodyTitle: 'Delete User ',
       description: 'Are you sure to Delete User ?',
-      okButtonText: 'Yes', // Custom text for Ok button
-      cancelButtonText: 'No', // Custom text for Cancel button
-      okButtonColor: 'danger', // Custom color for Ok button (green)
-      cancelButtonColor: 'secondary', // Custom color for Cancel button (red)
+      okButtonText: 'Yes', 
+      cancelButtonText: 'No', 
+      okButtonColor: 'danger',
+      cancelButtonColor: 'secondary', 
       headerColor: '#CE2222FF'
     });
 

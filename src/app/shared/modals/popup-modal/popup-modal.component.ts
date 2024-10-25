@@ -16,7 +16,7 @@ export class PopupModalComponent {
   @Input() cancelButtonText: string = 'Cancel'; // Default text
   @Input() okButtonColor: 'primary' | 'secondary' | 'success' | 'danger' = 'primary'; // Default color
   @Input() cancelButtonColor: 'primary' | 'secondary' | 'success' | 'danger' = 'secondary'; // Default color
-  @Input() headerColor: string = '007bff';
+  @Input() headerColor: string = '#32993C';
   @Output() okClick = new EventEmitter<void>();
   @Output() cancelClick = new EventEmitter<void>();
 
@@ -33,9 +33,17 @@ export class PopupModalComponent {
     this.activeModal.close(); // Close the modal when Ok is clicked
   }
 
+  confirm() {
+    this.activeModal.close('ok'); // Return 'ok' when confirm button is clicked
+  }
+
   onCancel() {
     this.cancelClick.emit();
     this.activeModal.close(); // Close the modal when Cancel is clicked
+  }
+
+  cancel() {
+    this.activeModal.dismiss('cancel'); // Return 'cancel' on dismissal
   }
 
   getOkButtonClass(): string {
