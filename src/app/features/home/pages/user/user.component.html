@@ -2,7 +2,7 @@
 <div class="page">
   <div class="header-page">
     <h5>Employee List</h5>
-    <button class="btn btn-danger" (click)="OnSetting()">Go Setting Page</button>
+    <button class="btn btn-success " (click)="createNew()">Add User</button>
   </div>
   
   <div class="body-page">
@@ -13,6 +13,14 @@
         <h5 class="card-title">Name: {{ card.EmployeeName }}</h5>
         <p class="card-text">Position: {{ card.EmployeePosition }}</p>
         <p class="card-text">Cost: {{ card.EmployeeCost | numberFormat }} THB</p>
+        <div class="card-option">
+          <a (click)="createNew(card)">
+            <icon-svg [path]="'pencil'" [size]="'2x'" [color]="'gray'" />
+          </a>
+          <a (click)="openPopup()">
+            <icon-svg [path]="'trash'" [size]="'2x'" [color]="'error'" />
+          </a>
+        </div>
       </div>
     </div>
   </div>

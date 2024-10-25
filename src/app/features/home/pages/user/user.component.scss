@@ -1,74 +1,216 @@
-.page {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem; /* Adjusted gap between elements */
-    background-color: #ffffff;
-    padding: 30px;
-    width: 100%; /* Full width for responsiveness */
-    max-width: 1200px;
-    margin: 0 auto; /* Center the page */
-    border-radius: 20px;
-  }
+// .page {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 0.5rem; /* Adjusted gap between elements */
+//     background-color: #ffffff;
+//     padding: 30px;
+//     width: 100%; /* Full width for responsiveness */
+//     max-width: 1200px;
+//     margin: 0 auto; /* Center the page */
+//     border-radius: 20px;
+//   }
 
-  .header-page {
-    display: flex;
-    justify-content: space-between;
-  }
+//   .header-page {
+//     display: flex;
+//     justify-content: space-between;
+//   }
   
-  .body-page {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr); /* Default 1 card per row */
-    gap: 1rem; /* Gap between cards */
-    padding: 20px;
-    justify-items: center;
+//   .body-page {
+//     display: grid;
+//     grid-template-columns: repeat(1, 1fr); /* Default 1 card per row */
+//     gap: 1rem; /* Gap between cards */
+//     padding: 20px;
+//     justify-items: center;
   
-    @media (min-width: 576px) {
-      grid-template-columns: repeat(2, 1fr); /* 2 cards per row on small screens */
-    }
+//     @media (min-width: 576px) {
+//       grid-template-columns: repeat(2, 1fr); /* 2 cards per row on small screens */
+//     }
   
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(3, 1fr); /* 3 cards per row on medium screens */
-    }
+//     @media (min-width: 768px) {
+//       grid-template-columns: repeat(3, 1fr); /* 3 cards per row on medium screens */
+//     }
   
-    @media (min-width: 1024px) {
-      grid-template-columns: repeat(4, 1fr); /* 4 cards per row on large screens */
-    }
-  }
+//     @media (min-width: 1024px) {
+//       grid-template-columns: repeat(4, 1fr); /* 4 cards per row on large screens */
+//     }
+//   }
   
-  .card {
-    width: 100%; /* Card will take the full available width in the grid column */
-    height: auto; /* Allow height to be flexible */
-    aspect-ratio: 3 / 4; /* Keep the card aspect ratio */
-    background: #f5f5f5;
-    border: 2px solid #c3c6ce;
-    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
-    backdrop-filter: blur(6px);
-    border-radius: 20px;
-    text-align: center;
+//   .card {
+//     width: 100%; /* Card will take the full available width in the grid column */
+//     height: auto; /* Allow height to be flexible */
+//     aspect-ratio: 3 / 4; /* Keep the card aspect ratio */
+//     background: #f5f5f5;
+//     border: 2px solid #c3c6ce;
+//     box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+//     backdrop-filter: blur(6px);
+//     border-radius: 20px;
+//     text-align: center;
+//     cursor: default;
+//     transition: all 0.5s;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     font-weight: bolder;
+//     color: black;
+//     padding: 10px;
+//     overflow: hidden;
+//   }
+  
+//   // .card:hover {
+//   //   border-color: #008bf8;
+//   //   box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+//   //   background: #f5f5f5;
+//   //   transform: scale(1.05);
+//   // }
+  
+//   // .card:active {
+//   //   transform: scale(0.95) rotateZ(1.7deg);
+//   // }
+  
+//   .card-img-top {
+//     object-fit: cover;
+//     margin-bottom: 15px;
+//   }
+
+//   .card-body {
+
+//     .card-option {
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       gap: .5rem;
+
+//       a {
+//         cursor: pointer;
+//         border-radius: 6px;
+//         background-color: rgba(255, 255, 255, 0.25);
+//         transition: background-color 0.3s ease, transform 0.2s ease;
+//         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+//         &:hover {
+//           background-color: rgba(255, 255, 255, 0.4);
+//           transform: scale(1.1);
+//         }
+
+//         icon-svg {
+//           width: auto;
+//         }
+//       }
+//     }
+//   }
+
+
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Adjusted gap between elements */
+  background-color: #ffffff;
+  padding: 30px;
+  width: 100%; /* Full width for responsiveness */
+  max-width: 1200px;
+  margin: 0 auto; /* Center the page */
+  border-radius: 20px;
+}
+
+.header-page {
+  display: flex;
+  justify-content: space-between;
+}
+
+.body-page {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping of cards */
+  justify-content: start;
+  gap: 1rem; /* Gap between cards */
+  padding: 20px;
+}
+
+/* Card styling */
+.card {
+  width: 250px; /* Fixed card width */
+  height: 350px; /* Fixed card height */
+  background: #f5f5f5;
+  border: 2px solid #c3c6ce;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  text-align: center;
+  cursor: default;
+  transition: all 0.5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: bolder;
+  color: black;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.card-img-top {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+  border-radius: 50%; /* Rounded image for profile look */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  a {
     cursor: pointer;
-    transition: all 0.5s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-weight: bolder;
-    color: black;
-    padding: 10px;
-    overflow: hidden;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.25);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.1);
+    }
+
+    icon-svg {
+      width: auto;
+    }
   }
-  
-  .card:hover {
-    border-color: #008bf8;
-    box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
-    background: #f5f5f5;
-    transform: scale(1.05);
+}
+
+/* Responsive layout for different screen sizes */
+@media (max-width: 575.98px) {
+  .body-page {
+    justify-content: space-evenly; /* Center cards on mobile screens */
   }
-  
-  .card:active {
-    transform: scale(0.95) rotateZ(1.7deg);
+}
+
+@media (min-width: 576px) {
+  .body-page {
+    justify-content: space-evenly; /* Evenly space cards on small screens */
+    width: 100%;
   }
-  
-  .card-img-top {
-    object-fit: cover;
-    margin-bottom: 15px;
+}
+
+@media (min-width: 1275px) {
+  .body-page {
+    justify-content: space-evenly; /* Maintain space between cards on large screens */
   }
+}
+
+@media (min-width: 1277px) {
+  .body-page {
+    justify-content: start; /* Maintain space between cards on large screens */
+  }
+}

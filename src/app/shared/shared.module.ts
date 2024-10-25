@@ -23,6 +23,8 @@ import { ModuleModalComponent } from './modals/module-modal/module-modal.compone
 import { ModalService } from './services/modal.service';
 import { DetailModalComponent } from './modals/detail-modal/detail-modal.component';
 import { NumberFormatPipe } from './pipe/number-format.pipe';
+import { UserModalComponent } from './modals/user-modal/user-modal.component';
+import { PopupModalComponent } from './modals/popup-modal/popup-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { NumberFormatPipe } from './pipe/number-format.pipe';
     ProjectModalComponent,
     ModuleModalComponent,
     DetailModalComponent,
-    NumberFormatPipe
+    NumberFormatPipe,
+    UserModalComponent,
+    PopupModalComponent
   ],
   imports: [
     CommonModule,

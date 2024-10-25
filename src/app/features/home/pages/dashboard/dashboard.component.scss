@@ -9,6 +9,7 @@
     min-width: calc(100% / 3);
     transition: transform 0.5s ease;
     box-shadow: .5rem solid #f0f0f0;
+    overflow: visible;
 
     &:hover {
       transform: scale(1.01);

@@ -1,0 +1,15 @@
+<div class="modal-header"  [ngStyle]="getHeaderStyle()">
+    <h5 class="modal-title">{{ headerTitle }}</h5>
+  </div>
+  
+  <div class="modal-body">
+    <h5>{{ bodyTitle }}</h5>
+    <p>{{ description }}</p>
+    <button (click)="onOk()" [ngClass]="getOkButtonClass()">
+      {{ okButtonText }}
+    </button>
+    <button (click)="onCancel()" [ngClass]="getCancelButtonClass()">
+      {{ cancelButtonText }}
+    </button>
+  </div>
+  

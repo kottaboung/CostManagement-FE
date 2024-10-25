@@ -1,0 +1,31 @@
+.modal-header {
+    color: white;
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  ::ng-deep .modal {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    height: 100vh; /* Use full viewport height */
+  }
+  
+  ::ng-deep .modal-dialog {
+    margin: auto; /* Center the modal dialog */
+    position: relative; /* Positioning for centering */
+  }
+  
+  ::ng-deep .modal-content {
+    width: auto; /* Width can be adjusted as needed */
+    max-width: 600px; /* Set a max-width for larger screens */
+  }
+  
+  .modal-body {
+    text-align: center; /* Center text in the modal body */
+  }
+  
+  button {
+    margin: 0.5rem;
+  }
+  
