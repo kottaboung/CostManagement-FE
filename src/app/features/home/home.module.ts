@@ -28,7 +28,7 @@ import { HomeRoutingModule } from './home-routing,module';
     EmployeesComponent,
   ],
   imports: [
-    CommonModule,
+  CommonModule,
     ReactiveFormsModule,
     FormsModule,
     HomeRoutingModule,

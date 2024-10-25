@@ -1,6 +1,7 @@
 <div class="home-container">
     <nav class="sidebar-left" [ngClass]="{'mini': isSidebarMini}">
         <div class="sidebar-left-header">
+            <icon-svg [path]="'cost'" [size]="'3x'" [color]="'white'" />
             <p *ngIf="!isSidebarMini" class="text-name">Cost <br/> Management</p>
         </div>
         
@@ -10,8 +11,8 @@
             <div [class]="isSidebarMini ? 'sidebar-content': 'sidebar-contented' ">
                 <a [class]="isSidebarMini ? 'toggle-btn' : 'toggled-btn' " (click)="toggleSidebar($event)">
                     <div class="icon-me">
-                        <icon-svg class="col-3" [path]="isSidebarMini ? 'expand' : 'collapse'" [size]="'lg'" />
-                        <span class="col-9" *ngIf="!isSidebarMini"><strong>Details</strong></span>
+                        <icon-svg class="col-3 text-center" [path]="'detail'" [size]="'3x'" [color]="'white'" />
+                        <span class="col-9" *ngIf="!isSidebarMini">Details</span>
                     </div>
                 </a>
     
@@ -37,13 +38,25 @@
                     <li>
                         <a routerLink="/projects" routerLinkActive="active-tab" class="nav-link">
                             <div class="icon-bg">
-                                <!-- <icon-svg [path]="'projects'" [size]="'lg'" /> -->
-                                <strong>P</strong>
+                                <icon-svg [path]="'project2'" [size]="'3x'" [color]="'white'"/>
+                                <!-- <strong>P</strong> -->
                             </div>
                             <span *ngIf="!isSidebarMini">Projects</span>
                         </a>
                     </li>
                 </ul>
+
+            </div>
+
+            <div [class]="isSidebarMini ? 'sidebar-foot' : 'sidebar-footed' ">
+                <div [class]="isSidebarMini ?  'foot-content' : 'foot-contented' ">
+                    <a routerLink="about/setting" routerLinkActive="active-tab" class="nav-link" >
+                        <div class="icon-bg">
+                            <icon-svg [path]="'setting'" [size]="'3x'" [color]="'white'" />
+                        </div>
+                        <span *ngIf="!isSidebarMini">Setting</span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>    

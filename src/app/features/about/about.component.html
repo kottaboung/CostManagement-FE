@@ -1,3 +1,84 @@
-<section>
-    <router-outlet></router-outlet>
-</section>
+<div class="home-container">
+    <nav class="sidebar-left" [ngClass]="{'mini': isSidebarMini}">
+        <div class="sidebar-left-header">
+            <icon-svg [path]="'cost'" [size]="'3x'" [color]="'white'" />
+            <p *ngIf="!isSidebarMini" class="text-name">Cost <br/> Management</p>
+        </div>
+        
+        <hr class="sidebar-divider" />
+    
+        <div class="sidebar-left-main">
+            <div [class]="isSidebarMini ? 'sidebar-content': 'sidebar-contented' ">
+                <a [class]="isSidebarMini ? 'toggle-btn' : 'toggled-btn' " (click)="toggleSidebar($event)">
+                    <div class="icon-me">
+                        <icon-svg class="col-3 text-center" [path]="'detail'" [size]="'3x'" [color]="'white'" />
+                        <span class="col-9" *ngIf="!isSidebarMini"><strong>Details</strong></span>
+                    </div>
+                </a>
+    
+                <ul>
+                    <li>
+                        <a routerLink="/dashboard" routerLinkActive="active-tab" class="nav-link">
+                            <div class="icon-bg">
+                                <icon-svg [path]="'Dashboard-Icon'" [size]="'3x'" [color]="'white'" />
+                                 <!-- <strong>D</strong> -->
+                            </div>
+                            <span *ngIf="!isSidebarMini">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/user" routerLinkActive="active-tab" class="nav-link">
+                            <div class="icon-bg">
+                                <icon-svg [path]="'User2'" [size]="'3x'"[color]="'white'" />
+                                <!-- <strong>U</strong> -->
+                            </div>
+                            <span *ngIf="!isSidebarMini">User</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/projects" routerLinkActive="active-tab" class="nav-link">
+                            <div class="icon-bg">
+                                <icon-svg [path]="'project2'" [size]="'3x'" [color]="'white'"/>
+                                <!-- <strong>P</strong> -->
+                            </div>
+                            <span *ngIf="!isSidebarMini">Projects</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-foot">
+                    <div class="foot-content">
+                        <a routerLink="about/setting" routerLinkActive="active-tab" class="nav-link" >
+                            <icon-svg [path]="'setting'" [size]="'3x'" [color]="'white'" />
+                            <span *ngIf="!isSidebarMini">Setting</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>    
+    
+  
+    <div class="container-content">
+      <div class="header">
+        <p class="text-name">{{ this.page }}</p>
+        <div class="header-right">
+          <input type="text" class="search-bar" placeholder="Search...">
+          <div class="profile-dropdown">
+            <button class="profile-btn" (click)="toggleDropdown()">
+              <icon-svg [path]="'User2'" [size]="'2x'" [color]="'gray'"></icon-svg>
+            </button>
+            <div class="dropdown-content" [ngClass]="{'active': isDropdownOpen}">
+              <a href="#">Profile</a>
+              <a [routerLink]="['/about/setting']">Setting</a>
+              <a href="#">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="content">
+        <router-outlet></router-outlet>
+      </section>
+    </div>
+  </div>
+  
