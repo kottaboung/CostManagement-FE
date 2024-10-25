@@ -9,6 +9,8 @@ import { Employee, Projects } from '../../../features/home/mockup-interface';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { masterDataEmployee } from '../../../core/interface/masterResponse.interface';
+import { PopupModalComponent } from '../../modals/popup-modal/popup-modal.component';
+import { ModalService } from './../../services/modal.service';
 
 declare var bootstrap: any;
 @Component({
@@ -64,7 +66,7 @@ export class CallendarComponent implements OnInit {
   employeeEvents: { [key: number]: EventInput[] } = {};
   employeeColors: { [key: number]: string } = {};
 
-  constructor(private http: HttpClient,private fb: FormBuilder) {
+  constructor(private http: HttpClient,private fb: FormBuilder, private modalService: ModalService) {
     this.eventForm = this.fb.group({
       title: ['',Validators.required],
       start: ['',Validators.required],
@@ -270,18 +272,94 @@ export class CallendarComponent implements OnInit {
         end: eventData.end,
         extendedProps: {
           descript: eventData.descript
-        },
-        
+        }
       };
   
-      this.calendarComponent.getApi().addEvent(newEvent);
-    }
+      const modalRef = this.modalService.popup(PopupModalComponent);
+      modalRef.componentInstance.headerTitle = 'Confirmation';
+      modalRef.componentInstance.bodyTitle = 'Confirm Add New Event?';
+      modalRef.componentInstance.description = 'Confirmation to add new event';
+      modalRef.componentInstance.okButtonText = 'Yes';
+      modalRef.componentInstance.cancelButtonText = 'No';
+      modalRef.componentInstance.okButtonColor = 'success';
+      modalRef.componentInstance.cancelButtonColor = 'danger';
+      modalRef.componentInstance.headerColor = '#32993C';
   
-    // Hide the offcanvas after saving
-    const offcanvasElement = document.getElementById('editEventOffcanvas');
-    const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement!);
-    offcanvas?.hide();
+      modalRef.componentInstance.okClick.subscribe(() => {
+        this.calendarComponent.getApi().addEvent(newEvent);
+        console.log('Ok clicked');
+  
+        // Close the offcanvas element with delay
+        setTimeout(() => {
+          const offcanvasElement = document.getElementById('editEventOffcanvas');
+          if (offcanvasElement) {
+            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement) || new bootstrap.Offcanvas(offcanvasElement);
+            offcanvas.hide();
+          } else {
+            console.warn('Offcanvas element not found');
+          }
+        }, 100); // Short delay to ensure smooth closure
+      });
+  
+      modalRef.componentInstance.cancelClick.subscribe(() => {
+        console.log('Cancel clicked');
+      });
+    }
   }
+
+  // saveEvent(): void {
+  //   const eventData = this.eventForm.value;
+  
+  //   if (this.editMode && this.selectedEvent) {
+  //     // Edit existing event
+  //     const calendarApi = this.calendarComponent.getApi();
+  //     const event = calendarApi.getEventById(this.selectedEvent.id);
+  
+  //     if (event) {
+  //       // Update the event properties
+  //       event.setProp('title', eventData.title);
+  //       event.setDates(eventData.start, eventData.end);
+  //       event.setExtendedProp('descript', eventData.descript);
+  //     }
+  //   } else {
+  //     // Create new event
+  //     const newEvent: EventInput = {
+  //       title: eventData.title,
+  //       start: eventData.start,
+  //       end: eventData.end,
+  //       extendedProps: {
+  //         descript: eventData.descript
+  //       },
+        
+  //     };
+
+  //     const modalRef = this.modalService.popup(PopupModalComponent);
+  //     modalRef.componentInstance.headerTitle = 'Confirmation';
+  //     modalRef.componentInstance.bodyTitle = 'Confirm Add New Event?';
+  //     modalRef.componentInstance.description = 'Confirmation to add new event';
+  //     modalRef.componentInstance.okButtonText = 'Yes';
+  //     modalRef.componentInstance.cancelButtonText = 'No';
+  //     modalRef.componentInstance.okButtonColor = 'success';
+  //     modalRef.componentInstance.cancelButtonColor = 'danger';
+  //     modalRef.componentInstance.headerColor = '#32993C';
+    
+
+  //     modalRef.componentInstance.okClick.subscribe(() => {
+  //       this.calendarComponent.getApi().addEvent(newEvent);
+  //       console.log('Ok clicked');
+        
+  //       const offcanvasElement = document.getElementById('editEventOffcanvas');
+  //       const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement!);
+  //       offcanvas?.hide();
+  //       // Handle Ok action here
+  //     });
+  
+  //     modalRef.componentInstance.cancelClick.subscribe(() => {
+  //       console.log('Cancel clicked');
+  //       // Handle Cancel action here
+  //     });
+  //   }
+  // }
   
 
   scrollToEvent(eventId?: string): void {

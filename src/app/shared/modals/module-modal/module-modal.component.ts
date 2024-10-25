@@ -3,6 +3,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../../services/api.service';
 import { masterDataEmployee, masterDataModule } from '../../../core/interface/masterResponse.interface';
+import { ModalService } from '../../services/modal.service';
+import { PopupModalComponent } from '../popup-modal/popup-modal.component';
 
 @Component({
   selector: 'app-module-modal',
@@ -20,7 +22,8 @@ export class ModuleModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -72,13 +75,43 @@ export class ModuleModalComponent implements OnInit {
 
   onSubmit(): void {
     if (this.moduleForm.valid && this.isAtLeastOneEmployeeSelected()) {
-      const updatedModule = this.moduleForm.value;
-      console.log('Updated Module:', updatedModule);
-      this.activeModal.close(updatedModule); 
-    } else {
-      alert('Please select at least one employee before saving.');
+      const modalRef = this.modalService.popup(PopupModalComponent);
+      if(!this.isEditMode) {
+        modalRef.componentInstance.headerTitle = 'Confirmation';
+        modalRef.componentInstance.bodyTitle = 'Confirm Add New Module?';
+        modalRef.componentInstance.description = 'Confirmation to add new module';
+        modalRef.componentInstance.okButtonText = 'Yes';
+        modalRef.componentInstance.cancelButtonText = 'No';
+        modalRef.componentInstance.okButtonColor = 'success';
+        modalRef.componentInstance.cancelButtonColor = 'danger';
+        modalRef.componentInstance.headerColor = '#32993C';
+      }
+      else if (this.isEditMode) {
+        modalRef.componentInstance.headerTitle = 'Confirmation';
+        modalRef.componentInstance.bodyTitle = 'Confirm Edit Module?';
+        modalRef.componentInstance.description = 'Confirmation to edit current module';
+        modalRef.componentInstance.okButtonText = 'Yes';
+        modalRef.componentInstance.cancelButtonText = 'No';
+        modalRef.componentInstance.okButtonColor = 'success';
+        modalRef.componentInstance.cancelButtonColor = 'danger';
+        modalRef.componentInstance.headerColor = '#32993C';
+      }
+    
+      modalRef.result.then((result) => {
+        if (result === 'ok') {
+          // If confirmed, proceed with saving
+          const updatedModule = this.moduleForm.value;
+          console.log('Updated Module:', updatedModule);
+          this.activeModal.close(updatedModule); 
+          this.activeModal.close('saved');
+        }
+      }).catch(() => {
+        // Handle cancel action
+        console.log('Confirmation modal dismissed');
+      });
     }
-  }
+  } 
+  
 
   isAtLeastOneEmployeeSelected(): boolean {
     return this.employees.controls.some(employee => employee.get('InModule')?.value);

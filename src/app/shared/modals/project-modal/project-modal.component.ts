@@ -6,6 +6,8 @@ import { ApiResponse } from '../../../core/interface/response.interface';
 import { map } from 'rxjs';
 import { masterData, masterDataEmployee, masterDataModule } from '../../../core/interface/masterResponse.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PopupModalComponent } from '../popup-modal/popup-modal.component';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-project-modal',
@@ -22,7 +24,8 @@ export class ProjectModalComponent {
   constructor(
     private fb: FormBuilder,
     private apiserive: ApiService,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private modalService: ModalService
   ) {
     this.projectForm = this.fb.group({
       projectName: ['', Validators.required],
@@ -85,9 +88,37 @@ export class ProjectModalComponent {
     })
   }
 
-  onSubmit(): void {
-    if (this.projectForm.valid) {
-      this.addProject();
+  // onSubmit(): void {
+  //   if (this.projectForm.valid) {
+  //     this.addProject();
+  //   }
+  // }
+
+  onSubmit(): void{
+
+    if(this.projectForm.valid) {
+      const modalRef = this.modalService.popup(PopupModalComponent);
+      modalRef.componentInstance.headerTitle = 'Confirmation';
+      modalRef.componentInstance.bodyTitle = 'Confirm Add New Project?';
+      modalRef.componentInstance.description = 'Confirmation to add new project';
+      modalRef.componentInstance.okButtonText = 'Yes';
+      modalRef.componentInstance.cancelButtonText = 'No';
+      modalRef.componentInstance.okButtonColor = 'success';
+      modalRef.componentInstance.cancelButtonColor = 'danger';
+      modalRef.componentInstance.headerColor = '#32993C';
+    
+
+    // Handle confirmation result
+    modalRef.result.then((result) => {
+      if (result === 'ok') {
+        // If confirmed, proceed with saving
+        this.addProject();
+        this.activeModal.close('saved');
+      }
+    }).catch(() => {
+      // Handle cancel action
+      console.log('Confirmation modal dismissed');
+    });
     }
   }
 

@@ -5,11 +5,7 @@
   <div class="modal-body">
     <h5>{{ bodyTitle }}</h5>
     <p>{{ description }}</p>
-    <button (click)="onOk()" [ngClass]="getOkButtonClass()">
-      {{ okButtonText }}
-    </button>
-    <button (click)="onCancel()" [ngClass]="getCancelButtonClass()">
-      {{ cancelButtonText }}
-    </button>
+    <button (click)="confirm()" [ngClass]="'btn btn-' + okButtonColor">{{ okButtonText }}</button>
+    <button (click)="cancel()" [ngClass]="'btn btn-' + cancelButtonColor">{{ cancelButtonText }}</button>
   </div>
   

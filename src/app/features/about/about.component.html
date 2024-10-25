@@ -12,7 +12,7 @@
                 <a [class]="isSidebarMini ? 'toggle-btn' : 'toggled-btn' " (click)="toggleSidebar($event)">
                     <div class="icon-me">
                         <icon-svg class="col-3 text-center" [path]="'detail'" [size]="'3x'" [color]="'white'" />
-                        <span class="col-9" *ngIf="!isSidebarMini"><strong>Details</strong></span>
+                        <span class="col-9" *ngIf="!isSidebarMini">Details</span>
                     </div>
                 </a>
     
@@ -46,13 +46,16 @@
                     </li>
                 </ul>
 
-                <div class="sidebar-foot">
-                    <div class="foot-content">
-                        <a routerLink="about/setting" routerLinkActive="active-tab" class="nav-link" >
+            </div>
+
+            <div [class]="isSidebarMini ? 'sidebar-foot' : 'sidebar-footed' ">
+                <div [class]="isSidebarMini ?  'foot-content' : 'foot-contented' ">
+                    <a routerLink="about/setting" routerLinkActive="active-tab" class="nav-link" >
+                        <div class="icon-bg">
                             <icon-svg [path]="'setting'" [size]="'3x'" [color]="'white'" />
-                            <span *ngIf="!isSidebarMini">Setting</span>
-                        </a>
-                    </div>
+                        </div>
+                        <span *ngIf="!isSidebarMini">Setting</span>
+                    </a>
                 </div>
             </div>
         </div>
