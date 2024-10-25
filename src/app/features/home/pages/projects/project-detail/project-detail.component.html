@@ -24,6 +24,24 @@
         </div>
       </ng-container>
     </div>
+
+    <div class="mt-5">
+      <h5>Progress: {{ progress }}%</h5>
+      <span *ngIf="progress == 99" class="alert-text">Over Time</span>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width.%]="progress"
+          [class.bg-success]="progress === 100"
+          [class.bg-warning]="progress < 100"
+          [class.bg-danger]="progress === 99 && progress < 100">
+        </div>
+      </div>
+      <button *ngIf="progress === 99" (click)="confirmCompletion()" class="btn btn-primary mt-2">
+        Confirm 100% Completion
+      </button>
+    </div>
   </div>
 
   <!-- Project Detail -->
@@ -46,6 +64,15 @@
           <div class="card h-100" style="cursor: pointer;">
             <div class="card-body d-flex space">
               <h5 class="card-title">Calendar</h5>
+            </div>
+          </div>
+        </div>
+      </a>
+      <a [routerLink]="['manage']" [queryParams]="{ project: projectName }" (click)="alert(3)" style="text-decoration: none;">
+        <div class="col-12">
+          <div class="card h-100" style="cursor: pointer;">
+            <div class="card-body d-flex space">
+              <h5 class="card-title">Manage Employees</h5>
             </div>
           </div>
         </div>

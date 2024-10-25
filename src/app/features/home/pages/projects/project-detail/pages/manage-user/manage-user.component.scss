@@ -81,16 +81,40 @@
     }
   
     .card:hover {
-      transform: scale(1.02);
+      transform: scale(1.015);
     }
 
-  }
+    .card-detail {
+        padding: 1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
 
-  .alert-text {
-    color: #CE2222FF;
-  }
-  
+        p {
+            font-size: large;
+            font-weight: 400;
+        }
+    }
 
-  .space {
-    justify-content: space-between;
+    .card-body {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 1rem;
+        margin-right: 1rem;
+      
+        .icon {
+          width: 30px;
+          height: auto;
+          transform: rotate(0deg);
+          transition: transform 0.3s ease; // Optional: Adds smooth rotation transition
+        }
+      
+        .iconed {
+          width: 30px;
+          height: auto;
+          transform: rotate(180deg);
+          transition: transform 0.3s ease; // Optional: Adds smooth rotation transition
+        }
+      }
+
+
   }

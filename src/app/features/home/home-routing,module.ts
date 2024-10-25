@@ -7,6 +7,7 @@ import { ProjectDetailComponent } from './pages/projects/project-detail/project-
 import { UserComponent } from './pages/user/user.component';
 import { ModuleTasksDetailComponent } from './pages/projects/project-detail/pages/module-tasks-detail/module-tasks-detail.component';
 import { EmployeesComponent } from './pages/projects/project-detail/pages/employees/employees.component';
+import { ManageUserComponent } from './pages/projects/project-detail/pages/manage-user/manage-user.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
             path: 'employees',
             component: EmployeesComponent
           },
+          {
+            path: 'manage',
+            component: ManageUserComponent
+          }
           // {
           //   path: '',
           //   redirectTo: 'module-tasks',

@@ -34,7 +34,7 @@ export interface masterDataEmployee {
     EmployeePosition: string,
     EmployeeCost: number,
     InModule?: number,
-    EmployeeImage: string
+    EmployeeImage?: string
 }
 
 export interface getmasterEmployee {

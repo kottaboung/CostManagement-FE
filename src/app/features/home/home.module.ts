@@ -14,6 +14,7 @@ import { ModuleTasksDetailComponent } from './pages/projects/project-detail/page
 import { EmployeesComponent } from './pages/projects/project-detail/pages/employees/employees.component';
 import { SharedModule } from '../../shared/shared.module';
 import { HomeRoutingModule } from './home-routing,module';
+import { ManageUserComponent } from './pages/projects/project-detail/pages/manage-user/manage-user.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { HomeRoutingModule } from './home-routing,module';
     ProjectDetailComponent,
     ModuleTasksDetailComponent,
     EmployeesComponent,
+    ManageUserComponent,
   ],
   imports: [
   CommonModule,
