@@ -25,6 +25,7 @@ import { DetailModalComponent } from './modals/detail-modal/detail-modal.compone
 import { NumberFormatPipe } from './pipe/number-format.pipe';
 import { UserModalComponent } from './modals/user-modal/user-modal.component';
 import { PopupModalComponent } from './modals/popup-modal/popup-modal.component';
+import { CircleChartComponent } from './components/circle-chart/circle-chart.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { PopupModalComponent } from './modals/popup-modal/popup-modal.component'
     DetailModalComponent,
     NumberFormatPipe,
     UserModalComponent,
-    PopupModalComponent
+    PopupModalComponent,
+    CircleChartComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +73,8 @@ import { PopupModalComponent } from './modals/popup-modal/popup-modal.component'
     MatInputModule,
     MatButtonModule,
     ModuleModalComponent,
-    NumberFormatPipe
+    NumberFormatPipe,
+    CircleChartComponent
   ],
   providers: [
     LoadingService,
