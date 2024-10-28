@@ -1,0 +1,34 @@
+<div>
+    <div class="page2">
+        <div class="d-flex gap-3 mb-3 col-6">
+            <div class="col-9">
+              <select class="form-control" [(ngModel)]="selectedEmployeeId">
+                <option *ngFor="let employee of selecting" [value]="employee.EmployeeId">{{ employee.EmployeeName }} ({{ employee.EmployeePosition }})</option>
+              </select>              
+            </div>
+            <button class="btn btn-success" (click)="addEmployee()">Add</button>
+          </div>          
+      <div class="row g-3">
+        <ul>
+            <li class="mb-3" *ngFor="let card of cards" (click)="openDropDown(card)" style="list-style-type: none; cursor: default;">
+                <div class="card h-100">
+                  <div>
+                    <div class="card-body">
+                      <h5 class="card-title">{{ card.employee.EmployeeName }}</h5>
+                      <icon-svg [ngClass]="card.isDropDown ? 'iconed' : 'icon'" [path]="'arrowDown'" [color]="'gray'" [size]="'3x'" />
+                    </div>
+                    <div class="card-detail" *ngIf="card.isDropDown">
+                      <div>
+                        <p class="card-text">Position: {{ card.employee.EmployeePosition }}</p>
+                        <p class="card-text">Cost: {{ card.employee.EmployeeCost | numberFormat }} THB</p>
+                      </div>
+                      <icon-svg [path]="'trash'" [size]="'3x'" [color]="'error'" />
+                    </div>
+                  </div>
+                </div>
+              </li>              
+        </ul>
+      </div>
+    </div>
+  </div>
+  

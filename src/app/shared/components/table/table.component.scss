@@ -110,3 +110,13 @@ ngx-datatable-footer {
   transform: scale(0.8); /* Smaller checkbox */
   margin-right: 10px; /* Proper spacing */
 }
+
+.custom-btn{
+  cursor: pointer;
+
+  icon-svg {
+    height: auto;
+    width: 20px;
+  } 
+  
+}

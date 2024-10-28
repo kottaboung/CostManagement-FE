@@ -9,7 +9,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PopupModalComponent {
 
-  @Input() headerTitle: string = '';
+  @Input() headerTitle: string = 'Confirmation';
   @Input() bodyTitle: string = '';
   @Input() description: string = '';
   @Input() okButtonText: string = 'Ok'; // Default text

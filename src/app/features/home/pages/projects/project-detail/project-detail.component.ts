@@ -26,58 +26,72 @@ export class ProjectDetailComponent implements OnInit {
   @Input() Project: masterData | null = null; 
   public projectId: number = 0;
   @Input() public active: boolean = true;
+  public progress = 0;
 
   constructor(
     private route: ActivatedRoute, 
     private router: Router, 
     private apiService: ApiService) { }
 
-  ngOnInit(): void {
-    // Load project based on the route parameter
-    this.route.paramMap.subscribe(params => {
-      this.projectName = params.get('name');
-      if (this.projectName) {
-        this.loadProject();
-      }
-    });
-  }
+    ngOnInit(): void {
+      this.route.paramMap.subscribe(params => {
+        this.projectName = params.get('name');
+        if (this.projectName) {
+          this.loadProject();
+        }
+      });
+    }
 
-  loadProject(): void {
-    if (!this.projectName) {
-      console.error('Project name is not defined.');
-      this.router.navigate(['/projects'], { queryParams: { error: 'not-found' } });
-      return;
+    loadProject(): void {
+      if (!this.projectName) {
+        this.router.navigate(['/projects'], { queryParams: { error: 'not-found' } });
+        return;
+      }
+  
+      this.apiService.getApi<masterData[]>('GetAllProjects').subscribe({
+        next: (response: ApiResponse<masterData[]>) => {
+          const projects: masterData[] = response.data;
+          this.project = projects.find(p => p.ProjectName === this.projectName);
+  
+          if (this.project) {
+            this.projectId = this.project.ProjectId;
+            const startDate = this.formatDate(this.project.ProjectStart);
+            this.calculateProgress(this.project.ProjectStart, this.project.ProjectEnd);
+  
+            // Populate project details
+            this.projectDetails = [
+              { label: 'Name', value: this.project.ProjectName || null },
+              { label: 'ProjectCost', value: this.project.ProjectCost ? this.project.ProjectCost.toFixed(2) : null },
+              { label: 'Created Date', value: startDate || null },
+              { label: 'Status', value: this.project.ProjectStatus === 1 ? 'Go A Live' : 'Working' }
+            ].filter(detail => detail.value);
+          } else {
+            this.router.navigate(['/projects'], { queryParams: { error: 'not-found' } });
+          }
+        },
+        error: () => {
+          this.router.navigate(['/projects'], { queryParams: { error: 'loading-error' } });
+        }
+      });
+    }
+
+    calculateProgress(startDate: Date | string, endDate: Date | string): void {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const today = new Date();
+  
+      if (today >= end) {
+        this.progress = 99;
+      } else {
+        const totalDuration = end.getTime() - start.getTime();
+        const elapsed = today.getTime() - start.getTime();
+        this.progress = Math.min(100, Math.floor((elapsed / totalDuration) * 100));
+      }
     }
   
-    this.apiService.getApi<masterData[]>('GetAllProjects').subscribe({
-      next: (response: ApiResponse<masterData[]>) => {
-        const projects: masterData[] = response.data; 
-        this.project = projects.find(p => p.ProjectName === this.projectName);
-        
-        if (this.project) {
-          const startDate = this.formatDate(this.project.ProjectStart);
-          this.projectId = this.project.ProjectId;
-  
-          // Populate the projectDetails array, skipping null or undefined values
-          this.projectDetails = [
-            { label: 'Name', value: this.project.ProjectName || null },
-            { label: 'ProjectCost', value: this.project.ProjectCost ? this.project.ProjectCost.toFixed(2) : null },
-            { label: 'Created Date', value: startDate || null },
-            { label: 'Status', value: this.project.ProjectStatus === 1 ? 'Go A Live' : 'Working' }
-          ].filter(detail => detail.value); // Filter out any details with null/empty values
-  
-          console.log(this.projectDetails);
-        } else {
-          console.error(`Project not found: ${this.projectName}`);
-          this.router.navigate(['/projects'], { queryParams: { error: 'not-found' } });
-        }
-      },
-      error: (error) => {
-        console.error('Error loading project data', error);
-        this.router.navigate(['/projects'], { queryParams: { error: 'loading-error' } });
-      }
-    });
-  }  
+    confirmCompletion(): void {
+      this.progress = 100;
+    }
 
 
 
@@ -109,7 +123,9 @@ findmanday(module: rModule): number{
     if (value === 1) {
       this.pageName = "Modules And Tasks";
     } else if (value === 2) {
-      this.pageName = "Employees";
+      this.pageName = "Calendar";
+    } else if (value === 3) {
+      this.pageName = "manage Employees";
     }
   }
 }

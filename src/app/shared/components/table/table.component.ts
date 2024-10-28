@@ -46,6 +46,15 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  current(value: number): string {
+    if(value === 0) {
+      return 'Done'
+    }
+    else {
+      return value.toString();
+    }
+  }
+
 
   status(value: number): string {
     return value === 1 ? 'Go A Live' : 'Working';
