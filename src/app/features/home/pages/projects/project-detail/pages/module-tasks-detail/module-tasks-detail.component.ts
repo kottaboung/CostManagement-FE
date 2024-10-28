@@ -16,12 +16,12 @@ export class ModuleTasksDetailComponent implements OnInit {
   projectName: string = '';
   public row: masterDataModule[] = [];
   public columns: any[] = [
-    { title: 'Module Name', prop: 'ModuleName', sortable: true, width: 300 },
-    { title: 'Created Date', prop: 'ModuleAddDate', sortable: true, width: 250 },
-    { title: 'Due Date', prop: 'ModuleDueDate', sortable: true, width: 250 },
-    { title: 'Duration', prop: 'mandays', sortable: true, width: 200 },
-    { title: "Current", prop: "Current", sortable: true, width: 200},
-    { title: 'button', prop: 'detail', sortable: false }
+    { title: 'Module Name', prop: 'ModuleName', sortable: true, width: 150 },
+    { title: 'Created Date', prop: 'ModuleAddDate', sortable: true, width: 150 },
+    { title: 'Due Date', prop: 'ModuleDueDate', sortable: true, width: 150 },
+    { title: 'Duration', prop: 'mandays', sortable: true, width: 100 },
+    { title: "Current", prop: "Current", sortable: true, width: 100 },
+    { title: 'button', prop: 'detail', sortable: false, width: 50 }
   ];
 
   constructor(

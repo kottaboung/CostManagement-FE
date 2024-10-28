@@ -1,13 +1,34 @@
 :host {
-    display: block;
-    height: 89vh;
-    max-height: 89vh;
-    overflow: auto;
-    padding: 1rem;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
-  }
+  display: block;
+  height: 89vh;
+  max-height: 89vh;
+  overflow: auto;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+:host::-webkit-scrollbar {
+  width: 10px;
+}
+
+:host::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+  border-radius: 10px;
+}
+
+:host::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: linear-gradient(to top, rgb(122, 153, 217) 44%, rgb(73, 125, 189) 72%, rgb(28, 58, 148) 86%);
+}
+
+/* Firefox scrollbar styling */
+:host {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgb(28, 58, 148) #F5F5F5; /* thumb color, track color */
+}
+
 
   .content-header {
     display: flex;
