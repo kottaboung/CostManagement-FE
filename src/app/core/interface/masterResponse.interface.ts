@@ -29,6 +29,13 @@ export interface masterDataModule {
     Current: number
 }
 
+export interface masterModuleChart {
+    ModuleId: number,
+    ModuleName: string,
+    ModuleAddDate: Date,
+    ModuleDueDate: Date
+}
+
 export interface addedUser {
     EmployeeId: number,
     ProjectId: number

@@ -42,6 +42,16 @@
         Confirm 100% Completion
       </button>
     </div>
+    <div class="d-flex">
+      <div class="col-6 mt-3">
+        <app-circle-chart [for]="1" [data]="this.projectName" />
+      </div>
+      <div class="col-6 mt-3">
+        <app-circle-chart [for]="2" [data]="this.projectName" />
+      </div>
+    </div>
+    
+    
   </div>
 
   <!-- Project Detail -->
