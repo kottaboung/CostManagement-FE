@@ -1,4 +1,5 @@
 
+import { Employee } from './../../features/home/mockup-interface';
 
 export interface masterDataResponse {
     status: string,
@@ -26,6 +27,11 @@ export interface masterDataModule {
     Employees: masterDataEmployee[]
     Duration: number,
     Current: number
+}
+
+export interface addedUser {
+    EmployeeId: number,
+    ProjectId: number
 }
 
 export interface masterDataEmployee {

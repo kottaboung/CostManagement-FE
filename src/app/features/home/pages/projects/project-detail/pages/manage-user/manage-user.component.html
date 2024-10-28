@@ -3,11 +3,8 @@
         <div class="d-flex gap-3 mb-3 col-6">
             <div class="col-9">
               <select class="form-control" [(ngModel)]="selectedEmployeeId">
-                <option value="" disabled>Select an Employee</option> <!-- Placeholder option -->
-                <option *ngFor="let employee of selecting" [value]="employee.EmployeeId">
-                  {{ employee.EmployeeName }} ({{ employee.EmployeePosition }})
-                </option>
-              </select>
+                <option *ngFor="let employee of selecting" [value]="employee.EmployeeId">{{ employee.EmployeeName }} ({{ employee.EmployeePosition }})</option>
+              </select>              
             </div>
             <button class="btn btn-success" (click)="addEmployee()">Add</button>
           </div>          
@@ -21,8 +18,11 @@
                       <icon-svg [ngClass]="card.isDropDown ? 'iconed' : 'icon'" [path]="'arrowDown'" [color]="'gray'" [size]="'3x'" />
                     </div>
                     <div class="card-detail" *ngIf="card.isDropDown">
-                      <p class="card-text">Position: {{ card.employee.EmployeePosition }}</p>
-                      <p class="card-text">Cost: {{ card.employee.EmployeeCost | numberFormat }} THB</p>
+                      <div>
+                        <p class="card-text">Position: {{ card.employee.EmployeePosition }}</p>
+                        <p class="card-text">Cost: {{ card.employee.EmployeeCost | numberFormat }} THB</p>
+                      </div>
+                      <icon-svg [path]="'trash'" [size]="'3x'" [color]="'error'" />
                     </div>
                   </div>
                 </div>

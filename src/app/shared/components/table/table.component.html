@@ -22,7 +22,10 @@
       <ng-container [ngSwitch]="dataTable">
         <ng-container *ngSwitchCase="'projects'">
           <ng-container  *ngIf="col.prop === 'detail'">
-            <button type="button" class="btn btn-outline-primary btn-sm" (click)="onDetailClick(row)">Details</button>
+            <!-- <button type="button" class="btn btn-outline-primary btn-sm" (click)="onDetailClick(row)">Details</button> -->
+             <a class="btn btn-sm custom-btn" (click)="onDetailClick(row)">
+              <icon-svg [path]="'detailTab'" [size]="'2x'" [color]="'primary'" />
+             </a>
           </ng-container>
           <ng-container *ngIf="col.prop === 'ProjectStart'">
             {{ value | date:'shortDate' }}
@@ -42,7 +45,11 @@
         </ng-container>
         <ng-container *ngSwitchCase="'modules'">
           <ng-container  *ngIf="col.prop === 'detail'">
-            <button type="button" class="btn btn-outline-primary btn-sm" (click)="onDetailClick(row)">Edit</button>
+            <a class="btn btn-sm custom-btn" (click)="onDetailClick(row)">
+              <icon-svg [color]="'primary'" [size]="'2x'" [path]="'isEdit'" />
+            </a>
+            <!-- <button type="button" class="btn btn-outline-primary btn-sm" (click)="onDetailClick(row)">Edit</button> -->
+            <!-- <button type="button" class="btn btn-outline-secondary btn-sm" *ngIf="current !== value" (click)="onDetailClick(row)">Detail</button> -->
           </ng-container>
           <ng-container *ngIf="col.prop === 'ModuleAddDate'">
             {{ value | date:'shortDate' }}
@@ -56,7 +63,10 @@
           <ng-container *ngIf="col.prop === 'ModuleCost'">
             {{ value | number }} THB
           </ng-container>
-          <ng-container *ngIf="col.prop !== 'ModuleAddDate' && col.prop !== 'ModuleDueDate' && col.prop !== 'mandays' && col.prop !== 'ModuleCost'">
+          <ng-container *ngIf="col.prop === 'Current'">
+            {{ current(value) }} 
+          </ng-container>
+          <ng-container *ngIf="col.prop !== 'ModuleAddDate'&& col.prop !== 'Current' && col.prop !== 'ModuleDueDate' && col.prop !== 'mandays' && col.prop !== 'ModuleCost'">
             {{ value }}
           </ng-container>
         </ng-container>

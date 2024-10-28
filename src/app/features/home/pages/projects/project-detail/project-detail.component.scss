@@ -1,5 +1,8 @@
 :host {
     display: block;
+    height: 89vh;
+    max-height: 89vh;
+    overflow: auto;
     padding: 1rem;
     background-color: #ffffff;
     border-radius: 8px;

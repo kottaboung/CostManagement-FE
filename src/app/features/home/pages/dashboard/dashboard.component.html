@@ -9,8 +9,11 @@
                     <div class="card me-3" *ngFor="let card of cards" style="flex: 0 0 calc(100% / 3.5);">
                         <div class="card-body">
                             <h5 class="card-title">{{ card.title }}</h5>
-                            <p class="card-text">
+                            <p *ngIf="card.title === 'Total Cost' && 'Current Year Cost' " class="card-text">
                                 {{ card.title === 'Total Cost' ? (card.description | numberFormat) : card.description }} THB
+                            </p>
+                            <p *ngIf="card.title !== 'Total Cost'" class="card.text">
+                                {{ card.description }}
                             </p>
                         </div>
                     </div>
