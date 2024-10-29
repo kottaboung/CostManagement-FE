@@ -45,9 +45,14 @@
           </ng-container>
         </ng-container>
         <ng-container *ngSwitchCase="'modules'">
+          <ng-container *ngIf="col.prop === 'data'" >
+            <a class="btn btn-sm custom-btn" (click)="ondata(row)">
+              <icon-svg [color]="'gray'" [size]="'2x'" [path]="'file-detail'" />
+            </a>
+          </ng-container>
           <ng-container  *ngIf="col.prop === 'detail'">
             <a class="btn btn-sm custom-btn" (click)="onDetailClick(row)">
-              <icon-svg [color]="'primary'" [size]="'2x'" [path]="'isEdit'" />
+              <icon-svg [color]="'primary'" [size]="'2x'" [path]="'file-edit'" />
             </a>
             <!-- <button type="button" class="btn btn-outline-primary btn-sm" (click)="onDetailClick(row)">Edit</button> -->
             <!-- <button type="button" class="btn btn-outline-secondary btn-sm" *ngIf="current !== value" (click)="onDetailClick(row)">Detail</button> -->

@@ -60,7 +60,7 @@
       <h2>Project Detail</h2>
     </div>
     <div class="row g-3">
-      <a [routerLink]="['module-tasks']" [queryParams]="{ project: projectName }" (click)="alert(1)" style="text-decoration: none;">
+      <a [routerLink]="['module-tasks']"  [queryParams]="{ project: projectName }" (click)="alert(1)" style="text-decoration: none;">
         <div class="col-12">
           <div class="card h-100" style="cursor: pointer;">
             <div class="card-body d-flex space">
@@ -97,7 +97,7 @@
     <div>
       <h4>{{ pageName }}</h4>
     </div>
-    <button type="button" class="btn btn-danger mx-3" (click)="active = true">Back</button>
+    <button *ngIf="num == 1" type="button" class="btn btn-danger mx-3" (click)="active = true">Back</button>
   </div>
   <div class="content">
     <router-outlet></router-outlet>

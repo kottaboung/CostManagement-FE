@@ -1,6 +1,7 @@
 <div>
     <div class="page2">
-        <div class="d-flex gap-3 mb-3 col-6">
+        <div class="d-flex gap-3 mb-3 col-9">
+          <h5 class="col-3 text-start">Add Employee</h5>
             <div class="col-9">
               <select class="form-control" [(ngModel)]="selectedEmployeeId">
                 <option *ngFor="let employee of selecting" [value]="employee.EmployeeId">{{ employee.EmployeeName }} ({{ employee.EmployeePosition }})</option>

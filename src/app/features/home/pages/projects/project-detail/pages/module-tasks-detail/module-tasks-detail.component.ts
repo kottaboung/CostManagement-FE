@@ -1,9 +1,10 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../../../../../shared/services/api.service';
 import { getmasterEmployee, masterData, masterDataEmployee, masterDataModule, showModuleById } from '../../../../../../../core/interface/masterResponse.interface';
 import { ModalService } from '../../../../../../../shared/services/modal.service';
 import { title } from 'process';
+import { SharedService } from '../../../../../mockup-service';
 
 @Component({
   selector: 'app-module-tasks-detail',
@@ -14,6 +15,13 @@ export class ModuleTasksDetailComponent implements OnInit {
   @Output() projectname: string = '';
   @Output() ifEmployee: masterDataEmployee[] = [];
   projectName: string = '';
+  text: string = ''
+  @Input() num = 1;
+  @Output() numChange = new EventEmitter<number>();
+  public progress = 0;
+  public ModuleList: masterDataModule[] =[];
+  public ModuleSelect?: masterDataModule
+  public page = 1;
   public row: masterDataModule[] = [];
   public columns: any[] = [
     { title: 'Module Name', prop: 'ModuleName', sortable: true, width: 150 },
@@ -21,13 +29,15 @@ export class ModuleTasksDetailComponent implements OnInit {
     { title: 'Due Date', prop: 'ModuleDueDate', sortable: true, width: 150 },
     { title: 'Duration', prop: 'mandays', sortable: true, width: 100 },
     { title: "Current", prop: "Current", sortable: true, width: 100 },
-    { title: 'button', prop: 'detail', sortable: false, width: 50 }
+    { title: "Detail", prop: "data", sortable: false, width: 50 },
+    { title: 'Edit', prop: 'detail', sortable: false, width: 50 }
   ];
 
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private share: SharedService
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +45,25 @@ export class ModuleTasksDetailComponent implements OnInit {
       this.projectName = params['project'];
       this.loadModule();
     });
+  }
+
+  updateNum() {
+    this.share.updateNum(2);
+    this.page++
+  }
+
+  calculateProgress(startDate: Date  | string, endDate: Date | string): void {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const today = new Date();
+
+    if (today >= end) {
+      this.progress = 100;
+    } else {
+      const totalDuration = end.getTime() - start.getTime();
+      const elapsed = today.getTime() - start.getTime();
+      this.progress = Math.min(100, Math.floor((elapsed / totalDuration) * 100));
+    }
   }
 
   fetchAvailableEmployees(): Promise<masterDataEmployee[]> {
@@ -77,6 +106,7 @@ export class ModuleTasksDetailComponent implements OnInit {
         console.log('API Response:', res);
         this.projectname = res.data.project.ProjectName;
         if (res.data && res.data.modules) {
+          this.ModuleList = res.data.modules
           this.row = res.data.modules.map(module => ({
             ...module,
             ModuleName: module.ModuleName,
@@ -126,7 +156,29 @@ export class ModuleTasksDetailComponent implements OnInit {
       });
   }
   
-  
+  onBack(): void{
+    this.share.updateNum(1);
+    this.page = 1;
+  }
+
+  ondata(Module: masterDataModule):void{
+    if(Module) {
+      this.share.updateNum(2);
+      this.page =2;
+      this.ModuleSelect = this.ModuleList.find(m => m.ModuleName === Module.ModuleName)
+      if(this.ModuleSelect?.ModuleAddDate && this.ModuleSelect.ModuleDueDate) {
+        const start = this.ModuleSelect.ModuleAddDate;
+        const end = this.ModuleSelect.ModuleDueDate;
+        this.ModuleSelect.Current = this.calculateManDays(new Date(start), new Date(end));
+        this.ModuleSelect.Duration = this.calculateCurrentDays(new Date(), new Date(end));
+        this.calculateProgress(start, end);
+      }
+      if (this.ModuleSelect?.Duration == 0 ){
+        this.text = "Done";
+      }
+      console.log('Modesssss:' , this.ModuleSelect)
+    }
+  }
 
   onDetailClick(modules: masterDataModule | masterData ): void {
     if (modules) {

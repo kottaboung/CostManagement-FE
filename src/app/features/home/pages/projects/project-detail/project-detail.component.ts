@@ -8,7 +8,7 @@ import { reduce } from 'rxjs';
 import { error } from 'console';
 import { ApiResponse } from '../../../../../core/interface/response.interface';
 import { masterData } from '../../../../../core/interface/masterResponse.interface';
-import { calculateTotalCost } from './../../../mockup-service';
+import { calculateTotalCost, SharedService } from './../../../mockup-service';
 
 @Component({
   selector: 'app-project-detail',
@@ -17,6 +17,7 @@ import { calculateTotalCost } from './../../../mockup-service';
 })
 export class ProjectDetailComponent implements OnInit {
   public project: masterData | undefined;
+  num = 1;
   @Input() currentStep = 2;
   public projectDetails: { label: string, value: any }[] = [];
   public page = 1;
@@ -31,7 +32,8 @@ export class ProjectDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private router: Router, 
-    private apiService: ApiService) { }
+    private apiService: ApiService,
+    private share: SharedService) { }
 
     ngOnInit(): void {
       this.route.paramMap.subscribe(params => {
@@ -39,6 +41,9 @@ export class ProjectDetailComponent implements OnInit {
         if (this.projectName) {
           this.loadProject();
         }
+      });
+      this.share.num$.subscribe((newNum) => {
+        this.num = newNum; // Update the parent's num value when changed in the child
       });
     }
 

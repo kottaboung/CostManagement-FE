@@ -106,18 +106,20 @@
 
             //background-color: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
 
             .icon-me {
                 //width: 2oopx;
                 height: auto;
                 display: flex;
                 align-items: center;
+                transition: background-color 0.3s ease, transform 0.3s ease;
 
                 icon-svg {
                     //margin-left: 1.2rem;
                     width: 3.5rem;
                     height: 3.5rem;
+                    transition: background-color 0.3s ease, transform 0.3s ease;
                 }
 
                 span {
@@ -137,7 +139,7 @@
                 align-items: center;
                 //text-decoration: center;
                 margin-bottom: 1rem;
-                //transition: background-color 0.3s ease, transform 0.3s ;
+                transition: background-color 0.3s ease, transform 0.3s ;
 
                 icon-svg {
                     //margin-left: 1.2rem;

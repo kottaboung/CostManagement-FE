@@ -34,8 +34,9 @@ export interface masterDataModule {
     ModuleDueDate: Date,
     ProjectName: string,
     Employees: masterDataEmployee[]
-    Duration: number,
-    Current: number
+    Duration?: number,
+    Current?: number | string,
+    ModuleCost?: number
 }
 
 export interface masterModuleChart {

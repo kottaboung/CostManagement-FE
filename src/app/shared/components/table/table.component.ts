@@ -25,6 +25,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   @Input() projectName?: string;
   @Input() name?: string
   @Output() ModuleName? : string;
+  @Output() dataClick: EventEmitter<masterDataModule> = new EventEmitter<masterDataModule>();
   @Output() detailClick: EventEmitter<masterData | masterDataModule> = new EventEmitter<masterData | masterDataModule>();
   //@ViewChild(DatatableComponent) table: DatatableComponent;
 
@@ -153,6 +154,10 @@ export class TableComponent implements OnInit, AfterViewInit {
     }else {
       this.detailClick.emit(row);
     }
+  }
+
+  ondata(row: masterDataModule): void{
+    this.dataClick.emit(row);
   }
 
   // onDetailClick(row: masterData | masterDataModule): void {

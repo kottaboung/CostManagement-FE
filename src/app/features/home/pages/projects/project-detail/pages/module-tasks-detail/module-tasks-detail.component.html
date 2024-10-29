@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="page == 1">
   <div class="d-flex justify-content-end mb-2">
      <button class="btn btn-primary" (click)="Createmodule()">Add Module</button>
   </div>
@@ -9,5 +9,55 @@
       [columns]="columns"
       [dataTable]="'modules'"
       (detailClick)="onDetailClick($event)"
+      (dataClick)="ondata($event)"
     ></app-table>
+</div>
+
+<div *ngIf="page == 2">
+  <div class="col-12 d-flex justify-content-end mb-3">
+    <button class="btn btn-danger" (click)="onBack()">Back</button>
   </div>
+  <div class="content">
+    <div class="card row g-3">
+      <div>
+        <p><strong>Module Name</strong></p>
+        <p>{{ ModuleSelect?.ModuleName }}</p>
+      </div>
+      <div>
+        <p><strong>Module Cost</strong></p>
+        <p>{{ ModuleSelect?.ModuleCost || 0 | numberFormat }} THB</p>
+      </div>
+      <div>
+        <p><strong>Modoule Start</strong></p>
+        <p>{{ ModuleSelect?.ModuleAddDate }}</p>
+      </div>
+      <div>
+        <p><strong>Modoule End</strong></p>
+        <p>{{ ModuleSelect?.ModuleDueDate }}</p>
+      </div>
+      <div>
+        <p><strong>Modoule Current</strong></p>
+        <p>{{ ModuleSelect?.Current }} Days</p>
+      </div>
+      <div>
+        <p><strong>Modoule Mandays</strong></p>
+        <p *ngIf="this.ModuleSelect?.Duration != 0">{{ ModuleSelect?.Duration }} </p>
+        <p *ngIf="this.ModuleSelect?.Duration == 0">{{ this.text }}</p>
+      </div>
+    </div>
+    <div class="bar-progess">
+      <div class="mt-5">
+        <h5>Progress: {{ progress }}%</h5>
+        <div class="progress">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            [style.width.%]="progress"
+            [class.bg-success]="progress === 100"
+            [class.bg-warning]="progress < 100"
+            >
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

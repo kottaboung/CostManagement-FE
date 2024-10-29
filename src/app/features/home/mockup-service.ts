@@ -21,3 +21,18 @@ export function calculateTotalCost(project: masterData): number {
 
   return moduleCosts + employeeCosts;
 }
+
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SharedService {
+  private numSource = new Subject<number>();
+  num$ = this.numSource.asObservable();
+
+  updateNum(num: number) {
+    this.numSource.next(num); // Emit new value
+  }
+}
