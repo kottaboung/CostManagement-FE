@@ -29,5 +29,13 @@
   [currentYear]="selectedYear"
   (chartItemClicked)="onChartItemClicked($event)">
 </app-chart>
+<div class="d-flex mt-5 g-3">
+    <div class="col-6 p-0">
+        <app-circle-chart [for]="3"  />
+    </div>
+    <div class="col-6 p-0">
+        <app-circle-chart [for]="4"  />
+    </div>
+</div>
 </div>
     

@@ -1,13 +1,13 @@
 <div>
     <div class="page2">
-        <div class="d-flex gap-3 mb-3 col-9">
+        <div class="d-flex gap-3 mb-3 col-12">
           <h5 class="col-3 text-start">Add Employee</h5>
-            <div class="col-9">
+            <div class="col-6">
               <select class="form-control" [(ngModel)]="selectedEmployeeId">
                 <option *ngFor="let employee of selecting" [value]="employee.EmployeeId">{{ employee.EmployeeName }} ({{ employee.EmployeePosition }})</option>
               </select>              
             </div>
-            <button class="btn btn-success" (click)="addEmployee()">Add</button>
+            <button class="btn btn-success col-3" (click)="addEmployee()">Add</button>
           </div>          
       <div class="row g-3">
         <ul>

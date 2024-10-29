@@ -1,99 +1,37 @@
 <div class="con">
-    <div class="row">
+  <div class="row">
 
-       <!-- Calendar Column -->
-       <div class="col-9">
-        <div class="p-3">
-          <full-calendar #calendar [options]="calendarOptions"></full-calendar>
-        </div>
+    <!-- Calendar Column -->
+    <div class="col-9">
+      <div class="p-3">
+        <full-calendar #calendar [options]="calendarOptions"></full-calendar>
       </div>
+    </div>
 
-
-      <!-- Employees Column -->
-      <div class="col-3 bg-light">
-        <div class="p-4">
-          <button type="button" class="btn btn-primary" (click)="onCreate()">
-            Create Event
-          </button>
-        </div>
-        <div class="p-3">
-          <ul class="list-group scroll">
-            <!-- Display employees -->
-            <li *ngFor="let employee of employees" class="list-group-item">
-              <p>
-                <strong>{{ employee.EmployeeName }} &nbsp; {{ employee.EmployeePosition }}<br></strong> 
-                <strong>{{ employee.EmployeeCost | number }} THB per day</strong>
-              </p>
-              <ul class="list-group mt-2">
-                <!-- Display events for each employee -->
-                <li *ngFor="let event of employeeEvents[employee.EmployeeId] || []" 
-                  class="list-group-item"
-                  [ngStyle]="{'background-color': employeeColors[employee.EmployeeId] || '#ffffff'}"
-                  style="cursor: pointer;" 
-                  (click)="scrollToEvent(event.id)">
-                <p>
-                  <strong>Event:</strong> {{ event.title }}<br>
-                  Description: {{ event.extendedProps?.['descript'] || 'No description available' }}                   
-                </p>                      
-              </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+    <!-- Employee Events Column -->
+    <div class="col-3 bg-light">
+      <div class="p-4">
+        <button type="button" class="btn btn-primary" (click)="saveEvent()">
+          Create Event
+        </button>
       </div>
-      
-    </div>
-  </div>
-
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="editEventOffcanvas" aria-labelledby="editEventOffcanvasLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="editEventOffcanvasLabel">{{ editMode ? 'Edit' : 'Create' }} Event</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <form [formGroup]="eventForm">
-        <div class="mb-3">
-          <label for="eventTitle" class="form-label">Event Title</label>
-          <input type="text" id="eventTitle" class="form-control" formControlName="title">
-        </div>
-        <div class="mb-3">
-          <label for="startDateTime" class="form-label">Start Date and Time</label>
-          <input type="datetime-local" id="startDateTime" class="form-control" formControlName="start">
-        </div>
-        <div class="mb-3">
-          <label for="endDateTime" class="form-label">Due Date and Time</label>
-          <input type="datetime-local" id="endDateTime" class="form-control" formControlName="end">
-        </div>
-        <div class="mb-3">
-          <label for="employees" class="form-label">Employee</label>
-          <select class="form-select mb-3" id="employee" #employeeName formControlName="employee">
-            <option *ngFor="let employee of filteredEmList" [value]="employee.EmployeeId">{{ employee.EmployeeName }}</option>
-          </select>
-          
-          <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-success" type="button" (click)="addEmployee(employeeName)" >Add</button>
-          </div>
-        
-          <div *ngIf="Evemployees.controls.length > 0">
-            <h5 class="mb-2">Added Employees</h5>
-            <ul class="list-group mb-3 ova">
-              <li *ngFor="let employee of Evemployees.controls; let i = index" class="mb-2 shadow-sm rounded list-group-item d-flex justify-content-between align-items-center">
-                {{ employee.get('employeeName')?.value }}
-                <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeEmployee(i)"> &times;</button>
+      <div class="p-3">
+        <ul class="list-group scroll">
+          <!-- Display employees -->
+          <li *ngFor="let employee of employees" class="list-group-item">
+            <ul class="list-group mt-2">
+              <!-- Display events for each employee -->
+              <li *ngFor="let event of employeeEvents[employee.EmployeeId]" class="list-group-item">
+                <h6>{{ event.title }}</h6>
+                <p>{{ event.extendedProps }}</p>
+                <p><small>Start: {{ event.start  }}</small></p>
+                <p><small>End: {{ event.end  }}</small></p>
               </li>
             </ul>
-          </div>
-        </div>
-        
-        <div class="mb-3">
-          <label for="eventDescription" class="form-label">Description</label>
-          <textarea id="eventDescription" class="form-control" formControlName="descript"></textarea>
-        </div>
-        <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-primary" (click)="saveEvent()">Save</button>
-          <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="offcanvas">Close</button>
-        </div>
-      </form>
+          </li>
+        </ul>
+      </div>
     </div>
+
   </div>
-  
+</div>

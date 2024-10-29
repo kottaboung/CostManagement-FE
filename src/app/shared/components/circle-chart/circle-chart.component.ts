@@ -3,7 +3,7 @@ import { EChartsOption, LegendComponentOption, SeriesOption } from 'echarts';
 import { ThemeOption } from 'ngx-echarts';
 import { CoolTheme } from '../../../core/enums/circle-chart-theme';
 import { ApiService } from '../../services/api.service';
-import { masterDataEmployee, masterDataModule } from '../../../core/interface/masterResponse.interface';
+import { masterData, masterDataEmployee, masterDataModule } from '../../../core/interface/masterResponse.interface';
 import { ApiResponse } from '../../../core/interface/response.interface';
 
 @Component({
@@ -14,41 +14,15 @@ import { ApiResponse } from '../../../core/interface/response.interface';
 export class CircleChartComponent implements OnInit{
 
   @Input() data: string | null = null;
-  @Input() for: number = 1 | 2;
+  @Input() for: number = 1 | 2 | 3 | 4;
   Module: masterDataModule[] = [];
   Employee: masterDataEmployee[] = [];
+  Project: masterData[]= [];
   Named: string = '';
 
   theme!: string | ThemeOption;
   coolTheme = CoolTheme;
-  // options: EChartsOption = {
-  //   title: {
-  //     left: '50%',
-  //     text: 'Module Chart',
-  //     subtext: `Module In ${this.Named} `,
-  //     textAlign: 'center',
-  //   },
-  //   tooltip: {
-  //     trigger: 'item',
-  //     formatter: '{a} <br/>{b} : {c} ({d}%)',
-  //   },
-  //   legend: {
-  //     align: 'auto',
-  //     bottom: 10,
-  //     data: [],
-  //   } as LegendComponentOption,
-  //   calculable: true,
-  //   series: [
-  //     {
-  //       name: 'area',
-  //       type: 'pie',
-  //       radius: [30, 110],
-  //       roseType: 'area',
-  //       data: [],
-  //     },
-  //   ] as SeriesOption[],
-  // };
-
+ 
   options: EChartsOption = {}
 
   constructor(
@@ -99,6 +73,29 @@ export class CircleChartComponent implements OnInit{
         });
       }
     }
+    if (this.for == 3) {
+      this.apiService.getApi<masterData[]>('GetAllProjects').subscribe({
+        next: (res: ApiResponse<masterData[]>) => {
+          console.log('All Project :' , res.data);
+          if( res.data ) {
+            this.Project = res.data
+            console.log('Geted :', this.Project);
+            this.updateChartData();
+          }
+        }
+      })
+    } else if (this.for == 4) {
+      this.apiService.getApi<masterDataEmployee[]>('GetAllEmployees').subscribe({
+        next: (res: ApiResponse<masterDataEmployee[]>) => {
+          console.log('All Employee :' , res.data);
+          if( res.data ) {
+            this.Employee = res.data
+            console.log('Geted :', this.Project);
+            this.updateChartData();
+          }
+        }
+      })
+    }
   }  
   
 
@@ -110,15 +107,6 @@ findmanday(module: masterDataModule): number {
     return mandays;
 }
 
-// updateChartData() {
-//   const chartData = this.Module.map(module => ({
-//     name: module.ModuleName,
-//     value: this.findmanday(module),
-//   }));
-
-//   (this.options.series as SeriesOption[])[0].data = chartData;
-//   (this.options.legend as LegendComponentOption).data = this.Module.map(module => module.ModuleName); 
-//   }
 
 updateChartData() {
   if(this.for == 1) {
@@ -178,6 +166,72 @@ updateChartData() {
         align: 'auto',
         bottom: 10,
         data: this.Employee.map((emp, index) => `${index + 1} ${emp.EmployeeName}`),
+      } as LegendComponentOption,
+      calculable: true,
+      series: [
+        {
+          name: 'Employees',
+          type: 'pie',
+          radius: [30, 110],
+          roseType: 'area',
+          data: chartData,
+        },
+      ],
+    };
+  } else if (this.for == 3 ) {
+    const chartData = this.Project.map(m => ({
+      name: m.ProjectName,
+      value: m.ProjectCost
+    }))
+
+    this.options = {
+      title: {
+        left: '50%',
+        text: 'Project Chart',
+        subtext: `All Project`,
+        textAlign: 'center',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)',
+      },
+      legend: {
+        align: 'auto',
+        bottom: 10,
+        data: this.Project.map(m => m.ProjectCost),
+      } as LegendComponentOption,
+      calculable: true,
+      series: [
+        {
+          name: 'Project',
+          type: 'pie',
+          radius: [30, 110],
+          roseType: 'area',
+          data: chartData,
+        },
+      ],
+    };
+  } else if (this.for == 4 ) {
+    const chartData = this.Employee.map(m => ({
+      name: m.EmployeeName,
+      value: m.EmployeeCost
+    }))
+
+    this.options = {
+      title: {
+        left: '50%',
+        text: 'Employee Chart',
+        subtext: `All Employee`,
+        textAlign: 'center',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)',
+      },
+      legend: {
+        align: 'auto',
+        bottom: 10,
+        data: this.Employee.map(m => m.EmployeeCost),
       } as LegendComponentOption,
       calculable: true,
       series: [
