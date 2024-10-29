@@ -1,0 +1,29 @@
+.content {
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    padding: 1rem; // Optional: Add some padding around the content
+
+    .card {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); // 2 columns
+        gap: 1rem;
+        border: none;
+
+        div {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+            padding: .5rem;
+            border-radius: 8px;
+            
+            p {
+                text-align: start;
+                margin: 1rem;
+            }
+
+            &:hover {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24);
+                transition: 0.3 ease-in-out;
+            }
+        }
+    }
+}

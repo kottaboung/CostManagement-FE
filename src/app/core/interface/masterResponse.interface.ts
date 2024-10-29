@@ -7,6 +7,15 @@ export interface masterDataResponse {
     data: masterData[]
 }
 
+export interface masterDataEvents {
+    EventId: number,
+    EventTitle: string,
+    EventDescription: String,
+    EventStart: Date,
+    EventEnd: Date,
+    Employees: masterDataEmployee[]
+}
+
 export interface masterData {
     ProjectId: number,
     ProjectName: string,
@@ -25,8 +34,9 @@ export interface masterDataModule {
     ModuleDueDate: Date,
     ProjectName: string,
     Employees: masterDataEmployee[]
-    Duration: number,
-    Current: number
+    Duration?: number,
+    Current?: number | string,
+    ModuleCost?: number
 }
 
 export interface masterModuleChart {

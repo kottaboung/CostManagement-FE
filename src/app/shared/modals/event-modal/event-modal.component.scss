@@ -1,0 +1,93 @@
+/* Hide the default checkbox */
+.container input {
+    display: none;
+  }
+  
+  .container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    position: relative;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    padding: 5px 10px;
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+  }
+  
+  /* Change background color on hover */
+  .container:hover {
+    background-color: #e6f7ff; /* Light blue on hover */
+    transform: translateY(-2px); /* Lift effect */
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: relative;
+    height: 1em;
+    width: 1em;
+    background-color: #e7e7e7;
+    border-radius: 0.25em;
+    transition: background-color 0.25s;
+  }
+  
+  /* When the checkbox is checked, change background color */
+  .container input:checked ~ .checkmark {
+    background-color: #4caf50; /* Green when checked */
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    border: 0.1em solid transparent;
+    left: 0;
+    top: 0;
+    width: .8em;
+    height: .8em;
+    border-radius: 0.15em;
+    transition: all 0.25s, border-width 0.1s;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    border-color: #fff; /* White checkmark */
+    border-width: 0 0.15em 0.15em 0;
+    border-radius: 0em;
+    transform: rotate(45deg);
+    left: 0.35em;
+    top: 0.2em;
+    width: 0.25em;
+    height: 0.5em;
+  }
+  
+  .subscribe {
+    position: relative;
+    width: 100%; /* Full width for subscription items */
+    height: max-content;
+    padding: 15px; /* Padding inside subscribe boxes */
+    background-color: #fff; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    color: #333;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-bottom: 15px; /* Space between subscribe items */
+    transition: transform 0.3s;
+  }
+  
+  /* Scale up on hover */
+  .subscribe:hover {
+    transform: scale(1.02); /* Slight scaling effect */
+  }
+  
+  .subscribe div {
+    margin-left: 10px; /* Space between checkbox and text */
+  }
+  
+  .subscribe span {
+    font-size: 14px; /* Smaller font size for position and cost */
+    color: #555; /* Darker color for position and cost */
+  }
+  

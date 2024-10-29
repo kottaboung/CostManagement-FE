@@ -1,33 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CalendarOptions, DateInput, EventInput } from '@fullcalendar/core/index.js';
-import dayGridPlugin from '@fullcalendar/daygrid'; // import dayGridPlugin
-import timeGridPlugin from '@fullcalendar/timegrid'; // import timeGridPlugin
-import listPlugin from '@fullcalendar/list'; // import listPlugin
-import interactionPlugin from '@fullcalendar/interaction'
-import { Employee, Projects } from '../../../features/home/mockup-interface';
-import { FullCalendarComponent } from '@fullcalendar/angular';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { masterDataEmployee } from '../../../core/interface/masterResponse.interface';
+import { CalendarOptions, EventInput } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin from '@fullcalendar/interaction';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PopupModalComponent } from '../../modals/popup-modal/popup-modal.component';
 import { ModalService } from './../../services/modal.service';
+import { ApiService } from '../../services/api.service';
+import { masterDataEmployee, masterDataEvents } from '../../../core/interface/masterResponse.interface';
+import { FullCalendarComponent } from '@fullcalendar/angular';
+import { ApiResponse } from '../../../core/interface/response.interface';
 
-declare var bootstrap: any;
 @Component({
   selector: 'app-callendar',
   templateUrl: './callendar.component.html',
-  styleUrl: './callendar.component.scss'
+  styleUrls: ['./callendar.component.scss']
 })
 export class CallendarComponent implements OnInit {
 
   @Input() projectName: string = '';
   @Input() employees: masterDataEmployee[] = [];
-  emlist: Employee[]=[];
-  filteredEmList: Employee[] = [];
-  selectedEvent: any;
+  Events: masterDataEvents[] = [];
+  employeeEvents: { [key: number]: EventInput[] } = {};
+  selectedEventId: string | null = null;
   eventForm: FormGroup;
   editMode: boolean = false;
-  selectedEventId: string | null = null;
 
   @ViewChild(FullCalendarComponent) calendarComponent!: FullCalendarComponent;
 
@@ -42,345 +41,127 @@ export class CallendarComponent implements OnInit {
     events: [],
     selectable: true,
     editable: true,
-    weekends: true,
-    eventClick: this.handleEventClick.bind(this),
+    eventClick: this.onEdit.bind(this),
   };
 
-  private getRandomColor(): string {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  private assignRandomColors(): void {
-    this.employees.forEach(employee => {
-      if (!this.employeeColors[employee.EmployeeId]) {
-        this.employeeColors[employee.EmployeeId] = this.getRandomColor();
-      }
-    });
-  }
-
-  employeeEvents: { [key: number]: EventInput[] } = {};
-  employeeColors: { [key: number]: string } = {};
-
-  constructor(private http: HttpClient,private fb: FormBuilder, private modalService: ModalService) {
+  constructor(
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private modalService: ModalService,
+    private apiService: ApiService
+  ) {
     this.eventForm = this.fb.group({
-      title: ['',Validators.required],
-      start: ['',Validators.required],
-      end: ['',Validators.required],
-      Evemployees: this.fb.array([]),
-      employees: [''],
+      title: ['', Validators.required],
+      start: ['', Validators.required],
+      end: ['', Validators.required],
       descript: [''],
     });
   }
 
   ngOnInit(): void {
-    this.mockEmployeeList();
     if (this.projectName) {
-      this.loadEvents();
-      this.assignRandomColors();
+      this.getEvent();
     }
   }
 
-  mockEmployeeList(): void {
-    this.emlist = [
-      { EmployeeId: 1, EmployeeName: 'John Doe' },
-      { EmployeeId: 2, EmployeeName: 'Jane Smith' },
-      { EmployeeId: 3, EmployeeName: 'Sam Johnson' },
-      { EmployeeId: 4, EmployeeName: 'Lisa Wong' }
-    ];
-    this.updateFilteredEmployeeList();
+  getEvent() {
+    const reqBody = { ProjectName: this.projectName };
+
+    this.apiService.postApi<masterDataEvents[], { ProjectName: string }>('/GetEventInProject', reqBody)
+      .subscribe({
+        next: (res: ApiResponse<masterDataEvents[]>) => {
+          if (res.data) {
+            this.Events = res.data;
+            this.loadEventsToCalendar();
+            this.assignEventsToEmployees();
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching events:', error);
+        }
+      });
   }
 
-  private updateFilteredEmployeeList(): void {
-    const selectedEmployeeIds = this.Evemployees.controls.map(employee => employee.get('employeeName')?.value);
-    
-    this.filteredEmList = this.emlist.filter(employee => !selectedEmployeeIds.includes(employee.EmployeeName));
+  loadEventsToCalendar() {
+    const calendarEvents = this.Events.map(event => ({
+      id: event.EventId.toString(), // Convert ID to string for FullCalendar
+      title: event.EventTitle,
+      start: event.EventStart,
+      end: event.EventEnd,
+      extendedProps: {
+        descript: event.EventDescription,
+        employees: event.Employees
+      }
+    }));
+
+    this.calendarOptions.events = calendarEvents;
+    this.calendarComponent.getApi().addEventSource(calendarEvents);
   }
 
-  // addEmployee(employeeSelect: HTMLSelectElement): void {
-  //   // const selectedEmployeeId = employeeSelect.value;
-  //   // const selectedEmployee = this.employees.find(emp => emp.EmployeeId === +selectedEmployeeId);
-  
-  //   // if (selectedEmployee) {
-  //   //   const employeeGroup = this.fb.group({
-  //   //     employeeName: [selectedEmployee.EmployeeName, Validators.required] // Use employee name in the form group
-  //   //   });
-  
-  //   //   this.Evemployees.push(employeeGroup);
-  //   //   // Reset the select field after adding the employee
-  //   //   employeeSelect.value = '';
-  //   // } else {
-  //   //   console.warn('Selected employee not found.');
-  //   // }
+  assignEventsToEmployees() {
+    this.employees.forEach(employee => {
+      this.employeeEvents[employee.EmployeeId] = this.Events.filter(event => 
+        event.Employees?.some(emp => emp.EmployeeId === employee.EmployeeId)
+      );
+    });
+  }
 
-  //   const selectedEmployeeId = employeeSelect.value;
-  //   const selectedEmployee = this.emlist.find(emp => emp.EmployeeId === +selectedEmployeeId);
+  onEdit(arg: any): void {
+    this.selectedEventId = arg.event.id;
+    const selectedEvent = this.Events.find(event => event.EventId.toString() === this.selectedEventId);
 
-  //   if (selectedEmployee) {
-  //     const employeeGroup = this.fb.group({
-  //       employeeName: [selectedEmployee.EmployeeName, Validators.required] // Use employee name in the form group
-  //     });
-
-  //     this.Evemployees.push(employeeGroup);
-  //     this.updateFilteredEmployeeList();
-  //     employeeSelect.value = '';
-  //   } else {
-  //     console.warn('Selected employee not found.');
-  //   }
-  // }
-  
-
-  // Remove employee from the FormArray
-  
-  addEmployee(employeeSelect: HTMLSelectElement): void {
-    const selectedEmployeeId = employeeSelect.value;
-    const selectedEmployee = this.emlist.find(emp => emp.EmployeeId === +selectedEmployeeId);
-
-    if (selectedEmployee) {
-      const employeeGroup = this.fb.group({
-        employeeName: [selectedEmployee.EmployeeName, Validators.required]
+    if (selectedEvent) {
+      this.editMode = true;
+      this.eventForm.patchValue({
+        title: selectedEvent.EventTitle,
+        start: selectedEvent.EventStart,
+        end: selectedEvent.EventEnd,
+        descript: selectedEvent.EventDescription,
       });
 
-      this.Evemployees.push(employeeGroup);
-
-      // Update filtered list after adding an employee
-      this.updateFilteredEmployeeList();
-      
-      // Reset the select field after adding the employee
-      employeeSelect.value = '';
-    } else {
-      console.warn('Selected employee not found.');
+      const modalRef = this.modalService.openEvent(selectedEvent);
+      modalRef.componentInstance.eventForm = this.eventForm;
+      modalRef.componentInstance.saveEvent.subscribe(() => {
+        this.saveEvent();
+      });
     }
   }
 
-  
-  removeEmployee(index: number): void {
-    this.Evemployees.removeAt(index);
-    this.updateFilteredEmployeeList();
-  }
+  openModal() {
 
-  loadEvents(): void {
-    this.http.get<Projects[]>('/assets/mockdata/mockData.json').subscribe(data => {
-      const project = data.find(p => p.name === this.projectName);
-      if (project) {
-        const events: EventInput[] = [];
-        project.modules.forEach(module => {
-          module.mockEvents.forEach(event => {
-            events.push({
-              title: event.title,
-              start: event.date,
-              extendedProps: {
-                module: module.moduleName,
-                descript: event.descript
-              },
-              id: event.title
-            });
-  
-            if (event.employeeId) {
-              if (!this.employeeEvents[event.employeeId]) {
-                this.employeeEvents[event.employeeId] = [];
-              }
-              this.employeeEvents[event.employeeId].push({
-                id: event.title,
-                title: event.title,
-                start: event.date,
-                extendedProps: {
-                  descript: event.descript
-                }
-              });
-            }
-          });
-        });
-  
-        // Refresh calendar with new events
-        this.calendarComponent.getApi().removeAllEvents();
-        this.calendarComponent.getApi().addEventSource(events);
-      } else {
-        console.warn('Project not found: ', this.projectName);
-      }
-    }, error => {
-      console.error('Error loading events: ', error);
-    });
-  }
-
-  openCreateEventOffcanvas(): void {
-    this.editMode = false;
-    this.selectedEventId = null;
-
-    const today = new Date().toISOString().split('T')[0]; // Get current date in yyyy-mm-dd format
-
-    // Reset the form with default values (start date set to today)
-    this.eventForm.reset({
-      title: '',
-      start: today + 'T09:00', // Default start time at 9 AM
-      end: today + 'T17:00',   // Default end time at 5 PM
-      descript: ''
-    });
-
-    const offcanvasElement = document.getElementById('editEventOffcanvas');
-    const offcanvas = new bootstrap.Offcanvas(offcanvasElement!);
-    offcanvas.show();
-  }
-  
-
-  handleEventClick(arg: any): void {
-    this.selectedEvent = arg.event;
-    this.editMode = true; // Set edit mode to true
-    this.selectedEventId = this.selectedEvent.id;
-  
-    // Populate the form with selected event details
-    this.eventForm.patchValue({
-      title: this.selectedEvent.title,
-      start: this.selectedEvent.startStr,
-      end: this.selectedEvent.endStr,
-      descript: this.selectedEvent.extendedProps['descript'],
-    });
-  
-    // Open the Bootstrap offcanvas
-    const offcanvasElement = document.getElementById('editEventOffcanvas');
-    const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
-    offcanvas.show();
-  }
-
-  get Evemployees(): FormArray {
-    return this.eventForm.get('Evemployees') as FormArray;
   }
 
   saveEvent(): void {
     const eventData = this.eventForm.value;
-  
-    if (this.editMode && this.selectedEvent) {
-      // Edit existing event
-      const calendarApi = this.calendarComponent.getApi();
-      const event = calendarApi.getEventById(this.selectedEvent.id);
-  
+    const calendarApi = this.calendarComponent.getApi();
+
+    if (this.editMode && this.selectedEventId) {
+      const event = calendarApi.getEventById(this.selectedEventId);
       if (event) {
-        // Update the event properties
         event.setProp('title', eventData.title);
         event.setDates(eventData.start, eventData.end);
         event.setExtendedProp('descript', eventData.descript);
       }
     } else {
-      // Create new event
       const newEvent: EventInput = {
         title: eventData.title,
         start: eventData.start,
         end: eventData.end,
         extendedProps: {
-          descript: eventData.descript
-        }
+          descript: eventData.descript,
+        },
       };
-  
-      const modalRef = this.modalService.popup(PopupModalComponent);
-      modalRef.componentInstance.headerTitle = 'Confirmation';
-      modalRef.componentInstance.bodyTitle = 'Confirm Add New Event?';
-      modalRef.componentInstance.description = 'Confirmation to add new event';
-      modalRef.componentInstance.okButtonText = 'Yes';
-      modalRef.componentInstance.cancelButtonText = 'No';
-      modalRef.componentInstance.okButtonColor = 'success';
-      modalRef.componentInstance.cancelButtonColor = 'danger';
-      modalRef.componentInstance.headerColor = '#32993C';
-  
+
+      const modalRef = this.modalService.openEvent(eventData);
       modalRef.componentInstance.okClick.subscribe(() => {
         this.calendarComponent.getApi().addEvent(newEvent);
-        console.log('Ok clicked');
-  
-        // Close the offcanvas element with delay
-        setTimeout(() => {
-          const offcanvasElement = document.getElementById('editEventOffcanvas');
-          if (offcanvasElement) {
-            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement) || new bootstrap.Offcanvas(offcanvasElement);
-            offcanvas.hide();
-          } else {
-            console.warn('Offcanvas element not found');
-          }
-        }, 100); // Short delay to ensure smooth closure
+        console.log('New Event Added:', newEvent);
       });
-  
+
       modalRef.componentInstance.cancelClick.subscribe(() => {
-        console.log('Cancel clicked');
+        console.log('Cancelled event creation');
       });
     }
   }
 
-  // saveEvent(): void {
-  //   const eventData = this.eventForm.value;
-  
-  //   if (this.editMode && this.selectedEvent) {
-  //     // Edit existing event
-  //     const calendarApi = this.calendarComponent.getApi();
-  //     const event = calendarApi.getEventById(this.selectedEvent.id);
-  
-  //     if (event) {
-  //       // Update the event properties
-  //       event.setProp('title', eventData.title);
-  //       event.setDates(eventData.start, eventData.end);
-  //       event.setExtendedProp('descript', eventData.descript);
-  //     }
-  //   } else {
-  //     // Create new event
-  //     const newEvent: EventInput = {
-  //       title: eventData.title,
-  //       start: eventData.start,
-  //       end: eventData.end,
-  //       extendedProps: {
-  //         descript: eventData.descript
-  //       },
-        
-  //     };
-
-  //     const modalRef = this.modalService.popup(PopupModalComponent);
-  //     modalRef.componentInstance.headerTitle = 'Confirmation';
-  //     modalRef.componentInstance.bodyTitle = 'Confirm Add New Event?';
-  //     modalRef.componentInstance.description = 'Confirmation to add new event';
-  //     modalRef.componentInstance.okButtonText = 'Yes';
-  //     modalRef.componentInstance.cancelButtonText = 'No';
-  //     modalRef.componentInstance.okButtonColor = 'success';
-  //     modalRef.componentInstance.cancelButtonColor = 'danger';
-  //     modalRef.componentInstance.headerColor = '#32993C';
-    
-
-  //     modalRef.componentInstance.okClick.subscribe(() => {
-  //       this.calendarComponent.getApi().addEvent(newEvent);
-  //       console.log('Ok clicked');
-        
-  //       const offcanvasElement = document.getElementById('editEventOffcanvas');
-  //       const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement!);
-  //       offcanvas?.hide();
-  //       // Handle Ok action here
-  //     });
-  
-  //     modalRef.componentInstance.cancelClick.subscribe(() => {
-  //       console.log('Cancel clicked');
-  //       // Handle Cancel action here
-  //     });
-  //   }
-  // }
-  
-
-  scrollToEvent(eventId?: string): void {
-    if (!eventId) {
-      console.warn('Event ID is undefined');
-      return;
-    }
-  
-    const calendarApi = this.calendarComponent.getApi();
-    const event = calendarApi.getEventById(eventId);
-    
-    if (event && event.start) {
-      // Scroll to the event start date
-      const startDate = event.start;
-      const dateStr = startDate.toISOString().split('T')[0]; // yyyy-mm-dd
-  
-      calendarApi.gotoDate(dateStr);
-    } else {
-      console.warn('Event not found or start date is null');
-    }
-  }
-  
-  
 }

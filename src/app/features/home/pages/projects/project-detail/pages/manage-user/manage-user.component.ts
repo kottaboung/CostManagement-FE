@@ -121,6 +121,18 @@ export class ManageUserComponent implements OnInit {
       }
     })
   }
+
+  onDelete(): void{
+    const modalRef = this.modalService.popup(PopupModalComponent, {
+      bodyTitle: "Delete User",
+      description: "Delete User",
+      okButtonText: "Yes",
+      cancelButtonText: "Cancel",
+      okButtonColor: "success",
+      cancelButtonColor: "danger",
+      headerColor: "#CE2222"
+    }); 
+  }
   
 
 }

@@ -26,6 +26,8 @@ import { NumberFormatPipe } from './pipe/number-format.pipe';
 import { UserModalComponent } from './modals/user-modal/user-modal.component';
 import { PopupModalComponent } from './modals/popup-modal/popup-modal.component';
 import { CircleChartComponent } from './components/circle-chart/circle-chart.component';
+import { NgxDatatableResizeWatcherDirective } from './services/directive.directive';
+import { EventModalComponent } from './modals/event-modal/event-modal.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { CircleChartComponent } from './components/circle-chart/circle-chart.com
     NumberFormatPipe,
     UserModalComponent,
     PopupModalComponent,
-    CircleChartComponent
+    CircleChartComponent,
+    NgxDatatableResizeWatcherDirective,
+    EventModalComponent,
   ],
   imports: [
     CommonModule,
@@ -74,7 +78,8 @@ import { CircleChartComponent } from './components/circle-chart/circle-chart.com
     MatButtonModule,
     ModuleModalComponent,
     NumberFormatPipe,
-    CircleChartComponent
+    CircleChartComponent,
+    NgxDatatableResizeWatcherDirective
   ],
   providers: [
     LoadingService,

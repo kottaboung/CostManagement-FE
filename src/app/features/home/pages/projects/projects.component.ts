@@ -18,12 +18,12 @@ import { ModalService } from '../../../../shared/services/modal.service';
 })
 export class ProjectsComponent implements OnInit {
   columns = [
-    { title: 'Project Name', prop: 'ProjectName', sortable: true, width: 300 },
-    { title: 'Cost', prop: 'ProjectCost' , sortable: true, width: 250 },
+    { title: 'Project Name', prop: 'ProjectName', sortable: true, width: 200 },
+    { title: 'Cost', prop: 'ProjectCost' , sortable: true, width: 180 },
     { title: 'Created Date', prop: 'ProjectStart', sortable: true, width: 150 },
     { title: 'End Date', prop: 'ProjectEnd', sortable: true, width: 150 },
-    { title: 'Status', prop: 'ProjectStatus', sortable: false, width: 200 },
-    { title: 'Detail', prop: 'detail', sortable: false, width: 100 }
+    { title: 'Status', prop: 'ProjectStatus', sortable: false, width: 100 },
+    { title: 'Detail', prop: 'detail', sortable: false, width: 50 }
   ];
   
   rows: masterData[] = []; // Updated to hold masterData type
