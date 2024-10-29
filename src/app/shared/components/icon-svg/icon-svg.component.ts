@@ -15,7 +15,7 @@ export class IconSvgComponent implements OnInit{
   @HostBinding('style.display') private _display!: string;
 
   @Input() public path!: IconName | string;;
-  @Input() public size: IconSize = '1x';
+  @Input() public size: IconSize = '3x';
   @Input() public color: IconColor = 'white';
 
 

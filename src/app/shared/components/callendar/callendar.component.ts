@@ -8,9 +8,11 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { Employee, Projects } from '../../../features/home/mockup-interface';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { masterDataEmployee } from '../../../core/interface/masterResponse.interface';
+import { masterData, masterDataEmployee, masterDataEvents } from '../../../core/interface/masterResponse.interface';
 import { PopupModalComponent } from '../../modals/popup-modal/popup-modal.component';
 import { ModalService } from './../../services/modal.service';
+import { ApiService } from '../../services/api.service';
+import { ApiResponse } from '../../../core/interface/response.interface';
 
 declare var bootstrap: any;
 @Component({
@@ -22,6 +24,7 @@ export class CallendarComponent implements OnInit {
 
   @Input() projectName: string = '';
   @Input() employees: masterDataEmployee[] = [];
+  Events: masterDataEvents[] = [];
   emlist: Employee[]=[];
   filteredEmList: Employee[] = [];
   selectedEvent: any;
@@ -43,7 +46,7 @@ export class CallendarComponent implements OnInit {
     selectable: true,
     editable: true,
     weekends: true,
-    eventClick: this.handleEventClick.bind(this),
+    eventClick: this.onEdit.bind(this),
   };
 
   private getRandomColor(): string {
@@ -66,7 +69,9 @@ export class CallendarComponent implements OnInit {
   employeeEvents: { [key: number]: EventInput[] } = {};
   employeeColors: { [key: number]: string } = {};
 
-  constructor(private http: HttpClient,private fb: FormBuilder, private modalService: ModalService) {
+  constructor(private http: HttpClient,private fb: FormBuilder, private modalService: ModalService,
+    private apiService: ApiService
+  ) {
     this.eventForm = this.fb.group({
       title: ['',Validators.required],
       start: ['',Validators.required],
@@ -80,7 +85,7 @@ export class CallendarComponent implements OnInit {
   ngOnInit(): void {
     this.mockEmployeeList();
     if (this.projectName) {
-      this.loadEvents();
+      this.getEvent();
       this.assignRandomColors();
     }
   }
@@ -163,48 +168,47 @@ export class CallendarComponent implements OnInit {
     this.updateFilteredEmployeeList();
   }
 
-  loadEvents(): void {
-    this.http.get<Projects[]>('/assets/mockdata/mockData.json').subscribe(data => {
-      const project = data.find(p => p.name === this.projectName);
-      if (project) {
-        const events: EventInput[] = [];
-        project.modules.forEach(module => {
-          module.mockEvents.forEach(event => {
-            events.push({
-              title: event.title,
-              start: event.date,
-              extendedProps: {
-                module: module.moduleName,
-                descript: event.descript
-              },
-              id: event.title
-            });
-  
-            if (event.employeeId) {
-              if (!this.employeeEvents[event.employeeId]) {
-                this.employeeEvents[event.employeeId] = [];
-              }
-              this.employeeEvents[event.employeeId].push({
-                id: event.title,
-                title: event.title,
-                start: event.date,
-                extendedProps: {
-                  descript: event.descript
-                }
-              });
-            }
-          });
-        });
-  
-        // Refresh calendar with new events
-        this.calendarComponent.getApi().removeAllEvents();
-        this.calendarComponent.getApi().addEventSource(events);
-      } else {
-        console.warn('Project not found: ', this.projectName);
+  onCreate() {
+    const modalRef = this.modalService.openEvent();
+  }
+
+  onEdit(arg: any): void{
+    this.selectedEvent = arg.event;
+    this.selectedEventId = this.selectedEvent.id;
+
+    const modalRef = this.modalService.openEvent(this.selectedEvent);
+  }
+
+  getEvent() {
+    const reqBody = {
+      ProjectName: this.projectName
+    };
+
+    this.apiService.postApi<masterDataEvents[], { ProjectName: string }>('/GetEventInProject', reqBody).subscribe({
+      next: (res: ApiResponse<masterDataEvents[]>) => {
+        if (res.data) {
+          this.Events = res.data;
+          this.loadEventsToCalendar(); // Load events to calendar after receiving them
+        }
       }
-    }, error => {
-      console.error('Error loading events: ', error);
     });
+  }
+
+  loadEventsToCalendar() {
+    const calendarEvents = this.Events.map(event => ({
+      title: event.EventTitle,
+      start: event.EventStart,
+      end: event.EventEnd,
+      description: event.EventDescription,
+      extendedProps: {
+        employees: event.Employees // If you want to access employees later
+      }
+    }));
+
+    // Update calendar options with the formatted events
+    this.calendarOptions.events = calendarEvents;
+    // Alternatively, if you're using a reference to the calendar component
+    this.calendarComponent.getApi().addEventSource(calendarEvents);
   }
 
   openCreateEventOffcanvas(): void {

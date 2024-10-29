@@ -7,6 +7,15 @@ export interface masterDataResponse {
     data: masterData[]
 }
 
+export interface masterDataEvents {
+    EventId: number,
+    EventTitle: string,
+    EventDescription: String,
+    EventStart: Date,
+    EventEnd: Date,
+    Employees: masterDataEmployee[]
+}
+
 export interface masterData {
     ProjectId: number,
     ProjectName: string,

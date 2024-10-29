@@ -27,6 +27,7 @@ import { UserModalComponent } from './modals/user-modal/user-modal.component';
 import { PopupModalComponent } from './modals/popup-modal/popup-modal.component';
 import { CircleChartComponent } from './components/circle-chart/circle-chart.component';
 import { NgxDatatableResizeWatcherDirective } from './services/directive.directive';
+import { EventModalComponent } from './modals/event-modal/event-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { NgxDatatableResizeWatcherDirective } from './services/directive.directi
     PopupModalComponent,
     CircleChartComponent,
     NgxDatatableResizeWatcherDirective,
+    EventModalComponent,
   ],
   imports: [
     CommonModule,

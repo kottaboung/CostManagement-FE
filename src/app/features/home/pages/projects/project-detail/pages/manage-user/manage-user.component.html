@@ -10,23 +10,32 @@
           </div>          
       <div class="row g-3">
         <ul>
-            <li class="mb-3" *ngFor="let card of cards" (click)="openDropDown(card)" style="list-style-type: none; cursor: default;">
+            <li class="parent mb-3" *ngFor="let card of cards" style="list-style-type: none; cursor: default;">
                 <div class="card h-100">
                   <div>
                     <div class="card-body">
-                      <h5 class="card-title">{{ card.employee.EmployeeName }}</h5>
-                      <icon-svg [ngClass]="card.isDropDown ? 'iconed' : 'icon'" [path]="'arrowDown'" [color]="'gray'" [size]="'3x'" />
+                      <div class="card-body-header">
+                        <div class="icon-bg">
+                          <icon-svg [path]="'User2'" [color]="'gray'" [size]="'3x'" />
+                        </div>
+                        <h5 class="card-title">{{ card.employee.EmployeeName }}</h5>
+                      </div>
+                      <a >
+                        <a >
+                          <icon-svg (click)="onDelete()"  [path]="'trash'" [size]="'3x'" [color]="'error'" />
+                        </a>
+                        <icon-svg (click)="openDropDown(card)" [ngClass]="card.isDropDown ? 'iconed' : 'icon'" [path]="'arrowDown'" [color]="'gray'" [size]="'3x'" />
+                      </a>
                     </div>
                     <div class="card-detail" *ngIf="card.isDropDown">
-                      <div>
+                      <div class="col-9">
                         <p class="card-text">Position: {{ card.employee.EmployeePosition }}</p>
                         <p class="card-text">Cost: {{ card.employee.EmployeeCost | numberFormat }} THB</p>
                       </div>
-                      <icon-svg [path]="'trash'" [size]="'3x'" [color]="'error'" />
                     </div>
                   </div>
                 </div>
-              </li>              
+            </li>              
         </ul>
       </div>
     </div>
