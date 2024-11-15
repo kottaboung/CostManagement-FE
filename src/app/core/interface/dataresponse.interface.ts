@@ -36,5 +36,6 @@ export interface rEmployee {
   export interface ProjectDesc {
     LastedProject: string,
     TotalProject: number,
-    TotalCost: number
+    TotalCost: number,
+    YearCost:number
   }
