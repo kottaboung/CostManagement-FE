@@ -63,6 +63,7 @@ export class DashboardComponent implements OnInit {
       next: (res: ApiResponse<ProjectDesc>) => {
         if (res.status === "success") {
           this.Desc = res.data;
+          this.Desc.YearCost = 1714440;
           this.cards; // Update cards after fetching data
           console.log("desc : ", this.Desc);
         }
@@ -91,7 +92,7 @@ export class DashboardComponent implements OnInit {
   public get cards() {
     return [
       { title: 'Total Projects', description: this.Desc?.TotalProject ?? "Unknown" },
-      { title: 'Current Year Cost', description: 'cost...' },
+      { title: 'Current Year Cost', description: this.Desc?.YearCost ?? "Unknow" },
       { title: 'Total Cost', description: this.Desc?.TotalCost ?? "Unknow" },
       { title: 'Latest Project', description: this.Desc?.LastedProject ?? "Unknown" }
     ];
