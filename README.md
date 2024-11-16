@@ -1,5 +1,7 @@
 # CostManagement
 
+[![CostManagement](https://kottaboung.github.io/CostManagement-FE/)](https://kottaboung.github.io/CostManagement-FE/)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.4.
 
 ## Development server
