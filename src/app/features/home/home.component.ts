@@ -1,5 +1,6 @@
 import { Component, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import e from 'express';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 export class HomeComponent {
 
   @Input() public page: string | undefined;
-  public isSidebarMini = true;
+  public fullbar = true;
   isDropdownOpen: boolean = false;
 
   // constructor(
@@ -24,11 +25,11 @@ export class HomeComponent {
 
 
   toggleSidebar(event: Event): void {
-    // Prevent event propagation if clicking on the link inside the sidebar
+    console.log(this.fullbar);
     if ((event.target as HTMLElement).closest('a')) {
       event.stopPropagation();
     }
-    this.isSidebarMini = !this.isSidebarMini;
+    this.fullbar = !this.fullbar;
   }
 
   toggleDropdown(): void {
