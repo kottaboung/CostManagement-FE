@@ -1,44 +1,50 @@
-<div class="content">
-    <div class="container mb-5">
-        <div class="row position-relative">
-            <button class="custom-btn bg-primary translate-middle-y" (click)="slideLeft()" [disabled]="currentsIndex === 0">
-                &lt;
-            </button>
-            <div class="col of mb-5">
-                <div class="d-flex gap-2" [ngStyle]="{'transform': 'translateX(-' + currentsIndex * (100 / visibleCards) + '%)'}">
-                    <div class="card me-3" *ngFor="let card of cards" style="flex: 0 0 calc(100% / 3.5);">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ card.title }}</h5>
-                            <p *ngIf="card.title === 'Total Cost'" class="card-text">
-                                {{ card.title === 'Total Cost' ? (card.description | numberFormat) : card.description }} THB
-                            </p>
-                            <p *ngIf="card.title === 'Current Year Cost'" class="card-text">
-                                {{ card.title === 'Current Year Cost' ? (card.description | numberFormat) : card.description }} THB
-                            </p>
-                            <p *ngIf="card.title !== 'Total Cost' && card.title !=='Current Year Cost' " class="card.text">
-                                {{ card.description }}
-                            </p>
+<div class="body">
+    <div class="content">
+        <div class="container mb-5">
+            <div class="row position-relative ">
+                <button class="custom-btn bg-primary translate-middle-y" (click)="slideLeft()" [disabled]="currentsIndex === 0">
+                    &lt;
+                </button>
+                <div class="col of mb-5">
+                    <div class="d-flex gap-2" [ngStyle]="{'transform': 'translateX(-' + currentsIndex * (100 / visibleCards) + '%)'}">
+                        <div class="card me-3" *ngFor="let card of cards" style="flex: 0 0 calc(100% / 3.5);">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ card.title }}</h5>
+                                <p *ngIf="card.title === 'Total Cost'" class="card-text">
+                                    {{ card.title === 'Total Cost' ? (card.description | numberFormat) : card.description }} THB
+                                </p>
+                                <p *ngIf="card.title === 'Current Year Cost'" class="card-text">
+                                    {{ card.title === 'Current Year Cost' ? (card.description | numberFormat) : card.description }} THB
+                                </p>
+                                <p *ngIf="card.title !== 'Total Cost' && card.title !=='Current Year Cost' " class="card.text">
+                                    {{ card.description }}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>            
-            <button class="custom-btn bg-primary translate-middle-y " (click)="slideRight()" [disabled]="currentsIndex >= maxIndex">
-                &gt;
-            </button>
+                </div>            
+                <button class="custom-btn bg-primary translate-middle-y " (click)="slideRight()" [disabled]="currentsIndex >= maxIndex">
+                    &gt;
+                </button>
+            </div>
+        </div>   
+        <app-chart
+        [years]="years"
+        [currentYear]="selectedYear"
+        (chartItemClicked)="onChartItemClicked($event)">
+        </app-chart>
+        <!-- <div class="d-flex mt-5 g-3">
+            <div class="col-6 p-0">
+                <app-circle-chart [for]="3"  />
+            </div>
+            <div class="col-6 p-0">
+                <app-circle-chart [for]="4"  />
+            </div>
         </div>
-    </div>   
-    <app-chart
-  [years]="years"
-  [currentYear]="selectedYear"
-  (chartItemClicked)="onChartItemClicked($event)">
-</app-chart>
-<div class="d-flex mt-5 g-3">
-    <div class="col-6 p-0">
-        <app-circle-chart [for]="3"  />
-    </div>
-    <div class="col-6 p-0">
-        <app-circle-chart [for]="4"  />
+        <div style="height: 250px;">
+
+        </div> -->
     </div>
 </div>
-</div>
+
     

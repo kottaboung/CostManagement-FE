@@ -2,9 +2,40 @@
   margin: 0;
   padding: 0;
 }
+
 .scroll {
-    overflow-y: auto;
-    overflow-x: none;
+  overflow-y: auto;
+  overflow-x: hidden; /* Use 'hidden' instead of 'none' for better compatibility */
+  height: 680px;
+
+  /* Webkit browsers (Chrome, Edge, Safari) */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #b0b0b0;
+    background-image: linear-gradient(to top, #cfcfcf 0%, #b0b0b0 50%, #8f8f8f 100%);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(to top, #d0d0d0 0%, #a0a0a0 50%, #707070 100%);
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #b0b0b0 #F5F5F5;
+}
+
+/* Optional for smoother scrolling */
+.scroll {
+  scroll-behavior: smooth;
 }
 
 .fc-event-title {

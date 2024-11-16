@@ -2,7 +2,7 @@
   display: flex;
   transition: transform 0.5s ease;
   width: 100%; /* Make sure it takes full width */
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
   .card {
@@ -46,4 +46,77 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  // .content {
+  //   min-height: 100vh; /* Ensures that content takes up at least full screen height */
+  //   overflow-y: auto;
+  // }
+  
+  // .content {
+  //   height: 100vh; /* Full height of the viewport */
+  //   overflow-y: auto; /* Enable vertical scrolling */
+  //   overflow-x: hidden; /* Prevent horizontal scrolling */
+  //   scroll-behavior: smooth; /* Optional: for smooth scrolling */
+    
+  //   /* Custom scrollbar styles */
+  //   ::-webkit-scrollbar {
+  //     width: 10px;
+  //   }
+  
+  //   ::-webkit-scrollbar-track {
+  //     background-color: #f5f5f5; /* Light gray track */
+  //     border-radius: 10px;
+  //   }
+  
+  //   ::-webkit-scrollbar-thumb {
+  //     background-color: #b0b0b0; /* Medium gray thumb */
+  //     border-radius: 10px;
+  //     background-image: linear-gradient(to top, #cfcfcf 0%, #b0b0b0 50%, #8f8f8f 100%);
+  //   }
+  
+  //   ::-webkit-scrollbar-thumb:hover {
+  //     background-color: #8f8f8f; /* Darker gray on hover */
+  //   }
+  
+  //   scrollbar-width: thin;
+  //   scrollbar-color: #b0b0b0 #f5f5f5;
+  // }
+
+  .content {
+    min-height: 100vh; /* Ensures that content takes up at least full screen height */
+    overflow-y: auto;
+  }
+  
+  .content {
+    height: 100vh; /* Full height of the viewport */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    scroll-behavior: smooth; /* Optional: for smooth scrolling */
+    
+    /* Custom scrollbar styles */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+  
+    ::-webkit-scrollbar-track {
+      background-color: #f5f5f5; /* Light gray track */
+      border-radius: 10px;
+    }
+  
+    ::-webkit-scrollbar-thumb {
+      background-color: #b0b0b0; /* Medium gray thumb */
+      border-radius: 10px;
+      background-image: linear-gradient(to top, #cfcfcf 0%, #b0b0b0 50%, #8f8f8f 100%);
+    }
+  
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #8f8f8f; /* Darker gray on hover */
+    }
+  
+    scrollbar-width: thin;
+    scrollbar-color: #b0b0b0 #f5f5f5;
+  }
+  
+  
+  
   

@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PopupModalComponent } from '../../modals/popup-modal/popup-modal.component';
 import { ModalService } from './../../services/modal.service';
 import { ApiService } from '../../services/api.service';
-import { masterDataEmployee, masterDataEvents } from '../../../core/interface/masterResponse.interface';
+import { DisplayUserListWithEvent, masterDataEmployee, masterDataEvents } from '../../../core/interface/masterResponse.interface';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { ApiResponse } from '../../../core/interface/response.interface';
 
@@ -23,6 +23,7 @@ export class CallendarComponent implements OnInit {
   @Input() projectName: string = '';
   @Input() employees: masterDataEmployee[] = [];
   Events: masterDataEvents[] = [];
+  UserEvent: DisplayUserListWithEvent[] =[];
   employeeEvents: { [key: number]: EventInput[] } = {};
   selectedEventId: string | null = null;
   eventForm: FormGroup;
@@ -61,6 +62,7 @@ export class CallendarComponent implements OnInit {
   ngOnInit(): void {
     if (this.projectName) {
       this.getEvent();
+      this.getDisplayEvent();
     }
   }
 
@@ -80,6 +82,26 @@ export class CallendarComponent implements OnInit {
           console.error('Error fetching events:', error);
         }
       });
+  }
+
+  getDisplayEvent() {
+    const reqBody = { ProjectName: this.projectName };
+
+    this.apiService.postApi<DisplayUserListWithEvent[], {ProjectName: string}>('/GetEventPerEmployee', reqBody)
+    .subscribe({
+      next: ((res : ApiResponse<DisplayUserListWithEvent[]>) => {
+        if(res.data) {
+          this.UserEvent = res.data.map(user => ({
+            ...user,
+            EmployeeData: {
+              ...user.EmployeeData,
+              EmployeeEvent: user.EmployeeData.Events, // Rename Events to EmployeeEvent
+            },
+          }));
+          console.log('Transformed Api:', this.UserEvent);
+        }
+      })
+    })
   }
 
   loadEventsToCalendar() {
