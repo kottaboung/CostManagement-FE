@@ -17,21 +17,27 @@
       </div>
       <div class="p-3">
         <ul class="list-group scroll">
-          <!-- Display employees -->
-          <li *ngFor="let employee of employees" class="list-group-item">
+          <!-- Loop through employees -->
+          <li *ngFor="let employee of UserEvent" class="list-group-item">
+            <div>
+              <h5>{{ employee.EmployeeData.EmployeeName }} <br> {{ employee.EmployeeData.EmployeePosition }}</h5>
+              <p>Cost: ${{ employee.EmployeeData.EmployeeCost }}</p>
+            </div>
+        
+            <!-- Nested events for each employee -->
             <ul class="list-group mt-2">
-              <!-- Display events for each employee -->
-              <li *ngFor="let event of employeeEvents[employee.EmployeeId]" class="list-group-item">
-                <h6>{{ event.title }}</h6>
-                <p>{{ event.extendedProps }}</p>
-                <p><small>Start: {{ event.start  }}</small></p>
-                <p><small>End: {{ event.end  }}</small></p>
+              <li *ngFor="let event of employee.EmployeeData.Events" class="list-group-item">
+                <strong>{{ event.EventTitle }}</strong>
+                <p>{{ event.EventDescription }}</p>
+                <small>
+                  Start: {{ event.EventStart | date: 'short' }} <br>
+                  End: {{ event.EventEnd | date: 'short' }}
+                </small>
               </li>
             </ul>
           </li>
         </ul>
       </div>
     </div>
-
   </div>
 </div>

@@ -16,6 +16,25 @@ export interface masterDataEvents {
     Employees: masterDataEmployee[]
 }
 
+export interface EventList {
+    EventId: number,
+    EventTitle: string,
+    EventDescription: String,
+    EventStart: Date,
+    EventEnd: Date,
+}
+
+export interface User {
+    EmployeeName: string,
+    EmployeePosition: string,
+    EmployeeCost: number,
+    Events: EventList[]
+}
+export interface DisplayUserListWithEvent {
+    EmployeeId: number,
+    EmployeeData: User
+}
+
 export interface masterData {
     ProjectId: number,
     ProjectName: string,

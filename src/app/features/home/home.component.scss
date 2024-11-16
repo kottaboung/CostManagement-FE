@@ -567,7 +567,7 @@
 .content {
     flex-grow: 1;
     padding: 1rem;
-    overflow-x: hidden;
+    overflow: hidden;
     background-color: #fff;
     border-top-right-radius: 16px;
     border-top-left-radius: 12px;
@@ -622,7 +622,7 @@
   .dropdown-content.active {
     display: block;
   }
-  
+
   :host::-webkit-scrollbar {
     width: 10px;
   }
